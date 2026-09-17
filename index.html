@@ -1,66 +1,75 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#0a0a09" />
-  <title>ОРАКУЛ — Telegram Mini App</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090807">
+<meta name="description" content="Оракул — 60 архетипов для вопросов, саморефлексии и новых смыслов.">
+<title>Оракул — 60 карт</title>
+<link rel="stylesheet" href="styles.css">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-  <div class="app-shell">
-    <header class="topbar">
-      <div>
-        <div class="eyebrow">АРХЕТИПЫ · 60 КАРТ</div>
-        <h1>ОРАКУЛ</h1>
-      </div>
-      <button class="icon-btn" id="historyBtn" aria-label="История">◌</button>
-    </header>
-
-    <main>
-      <section class="hero panel">
-        <div class="moon">☾</div>
-        <div class="hero-copy">
-          <span class="gold-line"></span>
-          <p>Задай вопрос.<br>Открой образ.<br>Услышь себя.</p>
-        </div>
-        <button class="primary-btn" id="drawBtn">Вытянуть карту <span>→</span></button>
-      </section>
-
-      <section class="quick-grid">
-        <button class="action-card" data-action="spread">
-          <span class="action-icon">✦</span><strong>Расклад</strong><small>1 · 3 · 5 карт</small>
-        </button>
-        <button class="action-card" data-action="catalog">
-          <span class="action-icon">◇</span><strong>Все 60 карт</strong><small>Каталог колоды</small>
-        </button>
-        <button class="action-card" data-action="history">
-          <span class="action-icon">◷</span><strong>История</strong><small>Твои расклады</small>
-        </button>
-      </section>
-
-      <section class="section-head">
-        <div><span class="eyebrow">ТРИ МИРА</span><h2>Колода</h2></div>
-      </section>
-      <section id="groups" class="groups"></section>
-    </main>
-
-    <nav class="bottom-nav">
-      <button class="nav-item active" data-action="home"><span>⌂</span><small>Главная</small></button>
-      <button class="nav-item" data-action="draw"><span>✦</span><small>Карта</small></button>
-      <button class="nav-item" data-action="spread"><span>◇</span><small>Расклад</small></button>
-      <button class="nav-item" data-action="catalog"><span>☷</span><small>Колода</small></button>
-    </nav>
+<div class="grain"></div>
+<header>
+  <button class="brand" data-screen="home"><span>ОРАКУЛ</span><b>60 карт</b></button>
+  <button class="round" id="aboutBtn" aria-label="О приложении">✦</button>
+</header>
+<main>
+<section id="home" class="screen active">
+  <div class="hero">
+    <div class="moon">☾</div><div class="constellation">✦ · ･ ✧ ･ · ✦</div>
+    <div class="hero-copy"><small>ТИХОЕ ПРОСТРАНСТВО</small><h2>Задай вопрос.<br>Вытяни знак.</h2><p>60 архетипов для саморефлексии, вопросов и новых смыслов. Не предсказание — пространство для диалога с собой.</p>
+    <div class="hero-actions"><button id="drawBtn" class="gold">Вытянуть карту</button><button id="threeBtn" class="ghost">Расклад из 3</button></div></div>
   </div>
-
-  <div id="modal" class="modal hidden">
-    <div class="modal-backdrop"></div>
-    <div class="modal-card" id="modalCard"></div>
+  <div class="head"><span>РАЗДЕЛЫ КОЛОДЫ</span><i>60 карт</i></div>
+  <div class="cats">
+    <button data-cat="resource"><b>I</b><span>Ресурс<br>и опора</span><em>20 карт</em></button>
+    <button data-cat="shadow"><b>II</b><span>Тень<br>и препятствия</span><em>20 карт</em></button>
+    <button data-cat="action"><b>III</b><span>Действие<br>и трансформация</span><em>20 карт</em></button>
   </div>
-  <script src="app.js"></script>
-</body>
-</html>
+  <div class="quote">«Карта не говорит, что будет. Она помогает увидеть то, что уже происходит внутри.»</div>
+</section>
+
+<section id="deck" class="screen">
+  <div class="title"><small>КОЛОДА</small><h2>Все карты</h2><p id="deckCount">60 архетипов</p></div>
+  <div class="filters"><button class="active" data-filter="all">Все</button><button data-filter="resource">Ресурс</button><button data-filter="shadow">Тень</button><button data-filter="action">Действие</button></div>
+  <div id="grid" class="grid"></div>
+</section>
+
+<section id="draw" class="screen">
+  <button class="back" data-screen="home">← Назад</button>
+  <div class="question-box"><label for="question">ТВОЙ ВОПРОС <span>необязательно</span></label><textarea id="question" maxlength="220" placeholder="О чём ты хочешь спросить себя?"></textarea></div>
+  <div class="stage"><div id="big" class="card large face-down"><div class="sigil">✦</div><strong>Твоя карта</strong><small>ОРАКУЛ · 60</small></div><p id="hint">Сосредоточься на вопросе и открой карту.</p><button id="reveal" class="gold">Открыть карту</button></div>
+</section>
+
+<section id="detail" class="screen"><button class="back" data-screen="deck">← К колоде</button><div id="detailBox"></div></section>
+
+<section id="spread" class="screen">
+  <button class="back" data-screen="home">← Назад</button>
+  <div class="title"><small>РАСКЛАД</small><h2>Посмотри глубже</h2><p>Выбери количество карт и сформулируй вопрос.</p></div>
+  <div class="spread-tabs"><button class="active" data-size="1">1 карта</button><button data-size="3">3 карты</button><button data-size="5">5 карт</button></div>
+  <div class="question-box"><label for="spreadQuestion">ВОПРОС <span>необязательно</span></label><textarea id="spreadQuestion" maxlength="220" placeholder="Что сейчас важно увидеть яснее?"></textarea></div>
+  <button id="spreadBtn" class="gold wide">Сделать расклад</button>
+  <div id="spreadResult" class="spread"></div>
+</section>
+
+<section id="history" class="screen">
+  <div class="title"><small>ПАМЯТЬ</small><h2>История</h2><p>Твои последние расклады и вытянутые карты хранятся на этом устройстве.</p></div>
+  <div id="historyList" class="history-list"></div><button id="clearHistory" class="danger ghost">Очистить историю</button>
+</section>
+
+<section id="about" class="screen">
+  <button class="back" data-screen="home">← Назад</button>
+  <div class="about-card"><small>О КОЛОДЕ</small><h2>Оракул</h2><p>60 образов, собранных в три мира: ресурс, тень и действие. Используй их как инструмент саморефлексии, а не как замену собственному решению.</p><div class="about-rule"></div><div class="about-stats"><div><b>60</b><span>карт</span></div><div><b>3</b><span>мира</span></div><div><b>∞</b><span>вопросов</span></div></div></div>
+</section>
+</main>
+<nav>
+  <button class="nav active" data-screen="home">⌂<small>Главная</small></button>
+  <button class="nav" data-screen="deck">◈<small>Колода</small></button>
+  <button class="nav" data-screen="spread">△<small>Расклад</small></button>
+  <button class="nav" data-screen="history">◷<small>История</small></button>
+</nav>
+<div id="toast" class="toast"></div>
+<script src="app.js"></script>
+</body></html>
