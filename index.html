@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0a09" />
+  <title>ОРАКУЛ — Telegram Mini App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">АРХЕТИПЫ · 60 КАРТ</div>
+        <h1>ОРАКУЛ</h1>
+      </div>
+      <button class="icon-btn" id="historyBtn" aria-label="История">◌</button>
+    </header>
+
+    <main>
+      <section class="hero panel">
+        <div class="moon">☾</div>
+        <div class="hero-copy">
+          <span class="gold-line"></span>
+          <p>Задай вопрос.<br>Открой образ.<br>Услышь себя.</p>
+        </div>
+        <button class="primary-btn" id="drawBtn">Вытянуть карту <span>→</span></button>
+      </section>
+
+      <section class="quick-grid">
+        <button class="action-card" data-action="spread">
+          <span class="action-icon">✦</span><strong>Расклад</strong><small>1 · 3 · 5 карт</small>
+        </button>
+        <button class="action-card" data-action="catalog">
+          <span class="action-icon">◇</span><strong>Все 60 карт</strong><small>Каталог колоды</small>
+        </button>
+        <button class="action-card" data-action="history">
+          <span class="action-icon">◷</span><strong>История</strong><small>Твои расклады</small>
+        </button>
+      </section>
+
+      <section class="section-head">
+        <div><span class="eyebrow">ТРИ МИРА</span><h2>Колода</h2></div>
+      </section>
+      <section id="groups" class="groups"></section>
+    </main>
+
+    <nav class="bottom-nav">
+      <button class="nav-item active" data-action="home"><span>⌂</span><small>Главная</small></button>
+      <button class="nav-item" data-action="draw"><span>✦</span><small>Карта</small></button>
+      <button class="nav-item" data-action="spread"><span>◇</span><small>Расклад</small></button>
+      <button class="nav-item" data-action="catalog"><span>☷</span><small>Колода</small></button>
+    </nav>
+  </div>
+
+  <div id="modal" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card" id="modalCard"></div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
