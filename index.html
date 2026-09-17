@@ -3,77 +3,86 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#070706">
-<meta name="description" content="Карты Знают — пространство для раскладов, вопросов и саморефлексии.">
-<title>Карты Знают — расклады</title>
+<meta name="theme-color" content="#080806">
+<meta name="description" content="Карты Знают — личный разговор с колодой.">
+<title>Карты Знают</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-<div class="ambient ambient-one"></div><div class="ambient ambient-two"></div><div class="grain"></div>
-<header>
-  <button class="brand" data-screen="home" aria-label="На главную"><span>КАРТЫ</span><b>Знают</b></button>
-  <button class="round" id="aboutBtn" aria-label="О колоде">✦</button>
-</header>
+<div class="veil"></div><div class="grain"></div>
+<header><button class="brand" data-screen="home"><span>КАРТЫ</span><b>Знают</b></button><button class="mark" data-screen="about">✦</button></header>
 <main>
 <section id="home" class="screen active">
-  <div class="hero">
-    <div class="hero-orbit"></div><div class="moon">☾</div><div class="constellation">✦ · ･ ✧ ･ · ✦</div>
-    <div class="hero-top"><span>ПЕРСОНАЛЬНЫЙ РАСКЛАД</span><i>60 КАРТ</i></div>
-    <div class="hero-copy"><small>ЗДЕСЬ НАЧИНАЕТСЯ ДИАЛОГ</small><h2>Задай вопрос.<br><em>Карты знают.</em></h2><p>Выбери расклад, сосредоточься на вопросе и открой образ, который поможет увидеть ситуацию яснее.</p>
-    <div class="hero-actions"><button id="drawBtn" class="gold"><span>Вытянуть карту</span><b>↗</b></button><button id="threeBtn" class="ghost">Расклад из 3</button></div></div>
+  <div class="home-intro">
+    <div class="eyebrow">ЛИЧНЫЙ РАЗГОВОР С КОЛОДОЙ</div>
+    <div class="moon-orbit"><span>✦</span></div>
+    <h1>Пришёл<br><em>с вопросом?</em></h1>
+    <p>Расскажи его так, как рассказал бы человеку, которому доверяешь. Не ищи правильных слов.</p>
+    <div class="question-field"><label>ТВОЙ ВОПРОС</label><textarea id="homeQuestion" maxlength="240" placeholder="Что сейчас не даёт мне покоя?"></textarea><span>до 240 символов</span></div>
+    <button id="askBtn" class="gold wide"><span>Передать вопрос картам</span><i>✦</i></button>
+    <button id="openSpread" class="text-button">Мне нужен глубокий расклад →</button>
   </div>
-  <div class="head"><span>ПРОСТРАНСТВА КОЛОДЫ</span><i>60 образов</i></div>
-  <div class="cats">
-    <button data-cat="resource"><b>I</b><span>Ресурс<br>и опора</span><em>20 карт</em><i>↗</i></button>
-    <button data-cat="shadow"><b>II</b><span>Тень<br>и препятствия</span><em>20 карт</em><i>↗</i></button>
-    <button data-cat="action"><b>III</b><span>Действие<br>и трансформация</span><em>20 карт</em><i>↗</i></button>
+  <div class="home-divider"><span>КОЛОДА</span><i>60 образов</i></div>
+  <div class="spaces">
+    <button data-screen="deck"><span>I</span><b>Ресурс<br>и опора</b><small>20 карт</small><i>↗</i></button>
+    <button data-screen="deck"><span>II</span><b>Тень<br>и препятствия</b><small>20 карт</small><i>↗</i></button>
+    <button data-screen="deck"><span>III</span><b>Действие<br>и трансформация</b><small>20 карт</small><i>↗</i></button>
   </div>
-  <div class="quote"><span>“</span>Карта не решает за тебя. Она помогает увидеть то, что уже происходит внутри.<span>”</span></div>
+</section>
+
+<section id="ritual" class="screen ritual-screen">
+  <div class="ritual-symbol">✦</div>
+  <small id="ritualStep">КАРТЫ СЛУШАЮТ</small>
+  <h2>Твой вопрос<br><em>услышан.</em></h2>
+  <p id="ritualQuestion"></p>
+  <div class="ritual-line"></div>
+  <div id="ritualText">Не ищи ответ. Просто побудь со своим вопросом.</div>
+  <button id="ritualAction" class="gold">Я готов</button>
+</section>
+
+<section id="draw" class="screen draw-screen">
+  <button class="back" data-screen="home">← выйти из расклада</button>
+  <div class="draw-head"><small id="drawStep">ОДНА КАРТА</small><h2>Теперь слушай.</h2><p id="drawHint">Сформулируй вопрос внутри себя и открой карту.</p></div>
+  <div class="deck-stage"><div id="big" class="oracle-card face-down"><div class="card-back-inner"><span>К</span><i>✦</i><small>КАРТЫ ЗНАЮТ</small></div></div><div class="stage-glow"></div></div>
+  <button id="reveal" class="gold reveal-btn">Открыть карту</button>
+  <div id="reading" class="reading">
+    <div class="reading-question"><small>ТЫ СПРОСИЛ</small><p id="readingQuestion"></p></div>
+    <div class="reading-lead"><small>ЧТО КАРТА ГОВОРИТ</small><p id="readingLead"></p></div>
+    <article><small>ТЕНЬ</small><p id="readingShadow"></p></article>
+    <article><small>НАПРАВЛЕНИЕ</small><p id="readingDirection"></p></article>
+    <article><small>ВОПРОС КАРТЫ</small><p id="readingNext"></p></article>
+    <button id="another" class="gold wide">Продолжить диалог</button>
+  </div>
+</section>
+
+<section id="spread" class="screen">
+  <button class="back" data-screen="home">← назад</button>
+  <div class="title"><small>ГЛУБОКИЙ РАСКЛАД</small><h2>Посмотрим<br><em>глубже.</em></h2></div>
+  <div class="spread-choice-row"><button id="spread1" class="spread-choice">1 карта</button><button id="spread3" class="spread-choice active">3 карты</button><button id="spread5" class="spread-choice">5 карт</button></div>
+  <div class="question-field"><label>ВОПРОС</label><textarea id="spreadQuestion" maxlength="240" placeholder="О чём ты хочешь спросить колоду?"></textarea></div>
+  <p id="spreadIntro" class="spread-intro">Три карты покажут вопрос с разных сторон.</p>
+  <button id="spreadStart" class="gold wide">Начать расклад <i>✦</i></button>
+  <div id="spreadResult" class="spread-result"></div>
+  <div id="spreadReading" class="spread-reading"></div>
 </section>
 
 <section id="deck" class="screen">
-  <div class="title"><small>КОЛОДА · 01—60</small><h2>Все карты</h2><p id="deckCount">60 архетипов</p></div>
-  <div class="filters"><button class="active" data-filter="all">Все</button><button data-filter="resource">Ресурс</button><button data-filter="shadow">Тень</button><button data-filter="action">Действие</button></div>
+  <div class="title"><small>КОЛОДА · 01—60</small><h2>Образы</h2><p id="deckCount">60 карт</p></div>
+  <select id="deckFilter"><option value="all">Все карты</option><option value="resource">Ресурс и опора</option><option value="shadow">Тень и препятствия</option><option value="action">Действие и трансформация</option></select>
   <div id="grid" class="grid"></div>
 </section>
 
-<section id="draw" class="screen">
-  <button class="back" data-screen="home">← Назад</button>
-  <div class="question-box"><label for="question">ТВОЙ ВОПРОС <span>необязательно</span></label><textarea id="question" maxlength="220" placeholder="О чём ты хочешь спросить себя?"></textarea></div>
-  <div class="stage"><div id="big" class="card large face-down"><div class="sigil">✦</div><strong>Твоя карта</strong><small>КАРТЫ ЗНАЮТ · 60</small></div><p id="hint">Сосредоточься на вопросе и открой карту.</p><button id="reveal" class="gold">Открыть карту</button></div>
-</section>
+<section id="detail" class="screen"><button class="back" data-screen="deck">← к колоде</button><div id="detailBox"></div></section>
 
-<section id="detail" class="screen"><button class="back" data-screen="deck">← К колоде</button><div id="detailBox"></div></section>
+<section id="history" class="screen"><div class="title"><small>ПАМЯТЬ РАСКЛАДОВ</small><h2>История</h2><p>Твои предыдущие встречи с колодой.</p></div><div id="historyList" class="history-list"></div><button id="clearHistory" class="text-button danger">Очистить историю</button></section>
 
-<section id="spread" class="screen">
-  <button class="back" data-screen="home">← Назад</button>
-  <div class="title"><small>РАСКЛАД · ДИАЛОГ</small><h2>Посмотри глубже</h2><p>Выбери количество карт и сформулируй вопрос.</p></div>
-  <div class="spread-tabs"><button data-size="1">1 карта</button><button class="active" data-size="3">3 карты</button><button data-size="5">5 карт</button></div>
-  <div class="question-box"><label for="spreadQuestion">ВОПРОС <span>необязательно</span></label><textarea id="spreadQuestion" maxlength="220" placeholder="Что сейчас важно увидеть яснее?"></textarea></div>
-  <button id="spreadBtn" class="gold wide"><span>Сделать расклад</span><b>↗</b></button>
-  <div id="spreadResult" class="spread"></div>
-</section>
-
-<section id="history" class="screen">
-  <div class="title"><small>ПАМЯТЬ · ТВОИ РАСКЛАДЫ</small><h2>История</h2><p>Последние расклады сохраняются на этом устройстве.</p></div>
-  <div id="historyList" class="history-list"></div><button id="clearHistory" class="danger ghost">Очистить историю</button>
-</section>
-
-<section id="about" class="screen">
-  <button class="back" data-screen="home">← Назад</button>
-  <div class="about-card"><div class="about-mark">✦</div><small>О КОЛОДЕ</small><h2>Карты<br><em>Знают.</em></h2><p>60 образов, собранных в три пространства: ресурс, тень и действие. Используй их как инструмент саморефлексии — для вопросов, наблюдения и новых смыслов.</p><div class="about-rule"></div><div class="about-stats"><div><b>60</b><span>карт</span></div><div><b>3</b><span>пространства</span></div><div><b>∞</b><span>вопросов</span></div></div></div>
-</section>
+<section id="about" class="screen"><button class="back" data-screen="home">← назад</button><div class="about"><div class="ritual-symbol">✦</div><small>О КОЛОДЕ</small><h2>Карты<br><em>Знают.</em></h2><p>60 образов. Три пространства. Один разговор — с тем, что уже знает твоя интуиция.</p><div class="about-stats"><b>60 <small>КАРТ</small></b><b>3 <small>ПРОСТРАНСТВА</small></b><b>∞ <small>ВОПРОСОВ</small></b></div></div></section>
 </main>
-<nav>
-  <button class="nav active" data-screen="home"><span>⌂</span><small>Главная</small></button>
-  <button class="nav" data-screen="deck"><span>◈</span><small>Колода</small></button>
-  <button class="nav" data-screen="spread"><span>△</span><small>Расклад</small></button>
-  <button class="nav" data-screen="history"><span>◷</span><small>История</small></button>
-</nav>
+<nav><button class="nav active" data-screen="home"><span>✦</span><small>Начало</small></button><button class="nav" data-screen="deck"><span>◈</span><small>Колода</small></button><button class="nav" data-screen="spread"><span>△</span><small>Расклад</small></button><button class="nav" data-screen="history"><span>◷</span><small>История</small></button></nav>
 <div id="toast" class="toast"></div>
 <script src="app.js"></script>
 </body></html>
