@@ -631,13 +631,14 @@ function resetDraw(){const big=$('#big');big.className='oracle-card face-down';b
 function reveal(){const c=random();$('#reveal').disabled=true;haptic('heavy');const big=$('#big');big.classList.add('turning');setTimeout(()=>{big.classList.remove('face-down','turning');big.innerHTML=`<div class="card-face">${cardImgTag(c)}<span class="card-no">${String(c.id).padStart(2,'0')}</span><div class="card-symbol">✦</div><strong>${esc(c.title)}</strong><small>${names[c.category]}</small></div>`;$('#drawStep').textContent='КАРТА ОТКРЫТА';$('#drawHint').textContent='«'+c.meaning+'»';showReading(c,currentQuestion);save({type:'card',question:currentQuestion,cards:[c.id]});haptic('success')},650)}
 function showReading(c,q){$('#reading').classList.add('visible');$('#readingQuestion').textContent=q?'Ты спросил: «'+q+'»':'Твой вопрос был услышан картами.';$('#readingLead').textContent=personalLead(c,q);$('#readingShadow').textContent=c.shadow;$('#readingDirection').textContent=c.direction;$('#readingNext').textContent=c.question;$('#another').textContent='Задать новый вопрос';setTimeout(()=>$('#reading').scrollIntoView({behavior:'smooth',block:'start'}),220)}
 function contextOf(q=''){
-  const s=q.toLowerCase();
-  if(/любов|отношен|девуш|парен|муж|жен|свидан|брак|семь|чувств|нравит|расстав|бывш/.test(s)) return 'relations';
-  if(/деньг|финанс|заработ|доход|зарплат|работ|бизнес|клиент|продаж|долг|кредит|покуп|инвест|карьер|професс|проект/.test(s)) return 'money';
-  if(/сегодня|день|завтра|недел|месяц|недел|период|скоро|ближайш/.test(s)) return 'day';
-  if(/реш|выб|стоит ли|делать|поступить|шаг|начать|законч|уехать|переезд/.test(s)) return 'decision';
-  if(/я |мне |мо[ёя]|почему я|чувств|страш|тревог|устал|состояни|внутр|самооцен/.test(s)) return 'inner';
-  if(/человек|люди|друг|друз|началь|коллег|родител|окружен/.test(s)) return 'people';
+  const s=q.toLowerCase().trim();
+  if(/любов|отношен|девуш|парен|муж|жен|свидан|брак|чувств|нравит|расстав|бывш|роман/.test(s)) return 'relations';
+  if(/деньг|финанс|заработ|доход|зарплат|бизнес|клиент|продаж|долг|кредит|инвест|прибыл|расход|покупк|богат|бедност|денеж/.test(s)) return 'money';
+  if(/работ|началь|коллег|карьер|професс|ваканс|увольн|собесед|проект|делов/.test(s)) return 'work';
+  if(/сегодня|мой день|день пройдет|завтра|недел|месяц|период|скоро|ближайш/.test(s)) return 'day';
+  if(/реш|выб|стоит ли|делать|поступить|шаг|начать|законч|уехать|переезд|попробовать/.test(s)) return 'decision';
+  if(/я |мне |мо[ёя]|почему я|чувств|страш|тревог|устал|состояни|внутр|самооцен|одиноч/.test(s)) return 'inner';
+  if(/человек|люди|друг|друз|родител|окружен|общени|отношени с/.test(s)) return 'people';
   return 'general';
 }
 function contextWords(q=''){return q.toLowerCase().replace(/[^а-яёa-z0-9\s]/gi,' ').split(/\s+/).filter(w=>w.length>3).slice(0,5)}
@@ -708,6 +709,7 @@ function personalLead(c,q=''){
   if(ctx==='money') return c.meaning;
   const starts={
     relations:'В контексте отношений карта показывает:',
+    work:'В рабочей ситуации карта показывает:',
     day:'Для твоего дня карта говорит:',
     decision:'Для твоего решения карта подсказывает:',
     inner:'Если смотреть внутрь себя, карта показывает:',
