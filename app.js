@@ -628,19 +628,9 @@ function startDraw(){screen('draw');resetDraw()}
 function startFromHome(){beginQuestion()}
 function ritualReady(){const q=$('#ritualQuestion').textContent.replace(/^«|»$/g,'');currentQuestion=q;screen('draw');resetDraw();$('#drawStep').textContent='ПЕРЕД ТЕБЯ — КОЛОДА';$('#drawHint').textContent='Сосредоточься на своём вопросе. Когда почувствуешь готовность — прикоснись к колоде.';haptic('medium')}
 function resetDraw(){const big=$('#big');big.className='oracle-card face-down';big.innerHTML='<div class="card-back-inner"><span>К</span><i>✦</i><small>КАРТЫ ЗНАЮТ</small></div>';$('#drawStep').textContent='ОДНА КАРТА';$('#drawHint').textContent=currentQuestion?'Вопрос уже внутри колоды. Когда почувствуешь готовность — прикоснись к карте.':'Сформулируй вопрос внутри себя и открой карту.';$('#reveal').textContent='Открыть карту';$('#reveal').disabled=false}
-function reveal(){const c=random();$('#reveal').disabled=true;haptic('heavy');const big=$('#big');big.classList.add('turning');setTimeout(()=>{big.classList.remove('face-down','turning');big.innerHTML=`<div class="card-face">${cardImgTag(c)}<span class="card-no">${String(c.id).padStart(2,'0')}</span><div class="card-symbol">✦</div><strong>${esc(c.title)}</strong><small>${names[c.category]}</small></div>`;$('#drawStep').textContent='КАРТА ОТКРЫТА';showReading(c,currentQuestion);save({type:'card',question:currentQuestion,cards:[c.id]});haptic('success')},650)}
-function showReading(c,q){$('#reading').classList.add('visible');$('#readingQuestion').textContent=q?'Ты спросил: «'+q+'»':'Твой вопрос был услышан картами.';$('#readingLead').textContent=personalLead(c,q);$('#readingShadow').textContent=c.shadow;$('#readingDirection').textContent=c.direction;$('#readingNext').textContent=c.question;$('#another').textContent='Задать новый вопрос';setTimeout(()=>$('#reading').scrollIntoView({behavior:'smooth',block:'start'}),220)}
-function contextOf(q=''){
-  const s=q.toLowerCase().trim();
-  if(/любов|отношен|девуш|парен|муж|жен|свидан|брак|чувств|нравит|расстав|бывш|роман/.test(s)) return 'relations';
-  if(/деньг|финанс|заработ|доход|зарплат|бизнес|клиент|продаж|долг|кредит|инвест|прибыл|расход|покупк|богат|бедност|денеж/.test(s)) return 'money';
-  if(/работ|началь|коллег|карьер|професс|ваканс|увольн|собесед|проект|делов/.test(s)) return 'work';
-  if(/сегодня|мой день|день пройдет|завтра|недел|месяц|период|скоро|ближайш/.test(s)) return 'day';
-  if(/реш|выб|стоит ли|делать|поступить|шаг|начать|законч|уехать|переезд|попробовать/.test(s)) return 'decision';
-  if(/я |мне |мо[ёя]|почему я|чувств|страш|тревог|устал|состояни|внутр|самооцен|одиноч/.test(s)) return 'inner';
-  if(/человек|люди|друг|друз|родител|окружен|общени|отношени с/.test(s)) return 'people';
-  return 'general';
-}
+
+
+
 function contextWords(q=''){return q.toLowerCase().replace(/[^а-яёa-z0-9\s]/gi,' ').split(/\s+/).filter(w=>w.length>3).slice(0,5)}
 const universalReadings={
   1:'Сегодня важнее всего опереться на то, что уже работает. Не раскачивай себя лишними сомнениями — спокойная устойчивость даст лучший результат.',
@@ -704,28 +694,13 @@ const universalReadings={
   59:'Старый цикл можно завершить. Освободившееся место используй для нового поведения, а не для возврата к прежнему.',
   60:'Верни в ситуацию немного лёгкости и любопытства. Не каждое решение должно приниматься через напряжение.'
 };
-function personalLead(c,q=''){
-  const ctx=contextOf(q);
-  if(ctx==='money') return c.meaning;
-  const starts={
-    relations:'В контексте отношений карта показывает:',
-    work:'В рабочей ситуации карта показывает:',
-    day:'Для твоего дня карта говорит:',
-    decision:'Для твоего решения карта подсказывает:',
-    inner:'Если смотреть внутрь себя, карта показывает:',
-    people:'В теме людей и общения карта подсвечивает:',
-    general:'Если смотреть на твой вопрос в целом, карта говорит:'
-  };
-  const words=contextWords(q);
-  const echo=words.length?' Твой вопрос остаётся главным фокусом: «'+words.slice(0,4).join('», «')+'».':'';
-  return (starts[ctx]||starts.general)+' '+universalReadings[c.id]+echo;
-}
+
 function leadFor(c){return personalLead(c,currentQuestion)}
 function another(){currentQuestion='';$('#homeQuestion').value='';$('#reading').classList.remove('visible');$('#ritualAction').disabled=false;screen('home');setTimeout(()=>$('#homeQuestion').focus(),300)}
 
 function openSpread(){const q=$('#homeQuestion').value.trim();currentQuestion=q;$('#spreadQuestion').value=q;screen('spread');$('#spreadResult').innerHTML='';$('#spreadReading').classList.remove('visible');$('#spreadReading').innerHTML='';$('#spreadIntro').textContent=q?'Вопрос принят. Теперь карты покажут его с трёх сторон.':'Сформулируй вопрос — так расклад станет личным.'}
 function doSpread(){const q=$('#spreadQuestion').value.trim();if(!q){$('#spreadQuestion').focus();toast('Напиши вопрос, прежде чем раскладывать карты.');return}currentQuestion=q;let pool=[...cards];spreadCards=[];for(let i=0;i<spreadSize;i++){const c=random(pool);spreadCards.push(c);pool=pool.filter(x=>x.id!==c.id)}const positions=spreadSize===1?['СУТЬ ВОПРОСА']:spreadSize===3?['ЧТО ПРОИСХОДИТ','ЧТО ОСТАЁТСЯ В ТЕНИ','СЛЕДУЮЩИЙ ШАГ']:['СУТЬ','ПРИЧИНА','ТЕНЬ','РЕСУРС','СЛЕДУЮЩИЙ ШАГ'];$('#spreadResult').innerHTML=spreadCards.map((c,i)=>`<div class="spread-card-wrap"><small>${positions[i]}</small>${cardMini(c)}</div>`).join('')+`<button id="interpretSpread" class="gold wide">Слушать весь расклад</button>`;$('#spreadResult .mini-card').forEach(x=>x.onclick=()=>detail(+x.dataset.id));$('#interpretSpread').onclick=()=>interpretSpread();save({type:'spread',question:q,cards:spreadCards.map(c=>c.id),size:spreadSize});haptic('medium')}
-function interpretSpread(){const result=$('#spreadReading');const positions=spreadSize===1?['СУТЬ ВОПРОСА']:spreadSize===3?['ЧТО ПРОИСХОДИТ','ЧТО ОСТАЁТСЯ В ТЕНИ','СЛЕДУЮЩИЙ ШАГ']:['СУТЬ','ПРИЧИНА','ТЕНЬ','РЕСУРС','СЛЕДУЮЩИЙ ШАГ'];result.innerHTML=`<div class="reading-block"><small>ВОПРОС, С КОТОРЫМ ТЫ ПРИШЁЛ</small><p>«${esc(currentQuestion)}»</p></div>`+spreadCards.map((c,i)=>`<article><small>${String(i+1).padStart(2,'0')} · ${positions[i]}</small><h3>${esc(c.title)}</h3><p>${personalLead(c,currentQuestion)}</p><div class="reading-sub"><b>ТЕНЬ</b><span>${c.shadow}</span></div><div class="reading-sub"><b>НАПРАВЛЕНИЕ</b><span>${c.direction}</span></div><div class="reading-sub"><b>ВОПРОС К ТЕБЕ</b><span>${c.question}</span></div></article>`).join('')+`<button class="gold wide" onclick="screen('home')">Задать новый вопрос</button>`;result.classList.add('visible');result.scrollIntoView({behavior:'smooth',block:'start'});haptic('success')}
+
 function detail(id){const c=cards.find(x=>x.id===id);if(!c)return;$('#detailBox').innerHTML=`<div class="detail-card"><div class="detail-symbol">${cardImgTag(c)}<i>✦</i></div><small>${String(c.id).padStart(2,'0')} · ${names[c.category].toUpperCase()}</small><h2>${esc(c.title)}</h2><em>${c.meaning}</em><section><b>ТЕНЬ</b><p>${c.shadow}</p></section><section><b>ВОПРОС К СЕБЕ</b><p>${c.question}</p></section><section><b>НАПРАВЛЕНИЕ</b><p>${c.direction}</p></section></div>`;screen('detail')}
 function renderDeck(){const filter=$('#deckFilter').value;const list=filter==='all'?cards:cards.filter(c=>c.category===filter);$('#grid').innerHTML=list.map(cardMini).join('');$$('#grid .mini-card').forEach(x=>x.onclick=()=>detail(+x.dataset.id));$('#deckCount').textContent=`${list.length} карт`}
 function renderHistory(){const box=$('#historyList');if(!history.length){box.innerHTML='<div class="empty"><span>✦</span><p>Здесь будут храниться ваши встречи с колодой.</p><small>Первый вопрос можно задать на главной.</small></div>';return}box.innerHTML=history.map(h=>{const d=new Date(h.at).toLocaleString('ru-RU',{day:'2-digit',month:'long',hour:'2-digit',minute:'2-digit'});return `<article class="history-item"><small>${h.type==='card'?'ОДНА КАРТА':`РАСКЛАД · ${h.size} КАРТ`}</small><time>${d}</time>${h.question?`<p>«${esc(h.question)}»</p>`:''}<div>${h.cards.map(id=>{const c=cards.find(x=>x.id===id);return c?`<button data-id="${id}">${String(id).padStart(2,'0')} · ${esc(c.title)}</button>`:''}).join('')}</div></article>`}).join('');$$('.history-item button').forEach(x=>x.onclick=()=>detail(+x.dataset.id))}
@@ -963,20 +938,6 @@ function readingFor(c,q=''){
   };
 }
 
-function personalLead(c,q=''){
-  const ctx=contextOf(q);
-  const starts={
-    relations:'Если вопрос об отношениях, карта подсвечивает:',
-    work:'Если вопрос о деятельности, карта подсвечивает:',
-    day:'Если вопрос о твоём дне, карта подсвечивает:',
-    decision:'Если вопрос о выборе, карта подсвечивает:',
-    inner:'Если смотреть на ситуацию изнутри, карта подсвечивает:',
-    people:'Если вопрос о людях и общении, карта подсвечивает:',
-    general:'Если смотреть на вопрос целиком, карта подсвечивает:'
-  };
-  if(ctx==='money') return c.meaning;
-  return (starts[ctx]||starts.general)+' '+(universalReadings[c.id]||c.meaning);
-}
 
 function showReading(c,q){
   const r=readingFor(c,q);
