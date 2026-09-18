@@ -50,23 +50,4 @@
 <nav><button class="nav active" data-screen="home"><span>✦</span><small>Начало</small></button><button class="nav" data-screen="deck"><span>◈</span><small>Колода</small></button><button class="nav" data-screen="spread"><span>△</span><small>Расклад</small></button><button class="nav" data-screen="history"><span>◷</span><small>История</small></button></nav>
 <div id="toast" class="toast"></div>
 <script src="app.js"></script>
-<script>
-(function(){
-  function go(id){
-    var screens=document.querySelectorAll('.screen');
-    var navs=document.querySelectorAll('nav .nav');
-    screens.forEach(function(s){s.classList.toggle('active',s.id===id);});
-    navs.forEach(function(n){n.classList.toggle('active',n.getAttribute('data-screen')===id);});
-    window.scrollTo(0,0);
-    if(id==='deck' && typeof renderDeck==='function') renderDeck();
-    if(id==='history' && typeof renderHistory==='function') renderHistory();
-  }
-  document.addEventListener('click',function(e){
-    var el=e.target.closest('[data-screen]');
-    if(!el) return;
-    e.preventDefault();
-    go(el.getAttribute('data-screen'));
-  },true);
-})();
-</script>
 </body></html>
