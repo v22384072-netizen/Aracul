@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0b0a">
+<title>Карты Знают</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=7.0">
+</head>
+<body>
+<div class="app">
+<header class="topbar">
+  <button class="wordmark" data-screen="home"><span>КАРТЫ</span><strong>Знают</strong></button>
+  <div class="top-actions"><button class="icon-btn" id="aboutBtn" aria-label="О проекте">?</button></div>
+</header>
+
+<main>
+<section id="home" class="screen active">
+  <div class="hero">
+    <div class="hero-copy">
+      <div class="kicker"><i></i> ЛИЧНЫЙ РАЗГОВОР С КОЛОДОЙ</div>
+      <h1>Спроси.<br><em>И послушай.</em></h1>
+      <p>Не ищи правильный вопрос. Скажи то, что действительно хочешь понять.</p>
+    </div>
+    <div class="ask-panel">
+      <label for="question">ТВОЙ ВОПРОС <span>01</span></label>
+      <textarea id="question" maxlength="240" placeholder="Что сейчас занимает твои мысли?"></textarea>
+      <div class="ask-footer"><span id="count">0 / 240</span><button id="askBtn">Передать картам <b>↗</b></button></div>
+    </div>
+  </div>
+
+  <div class="feature">
+    <div class="feature-meta"><span>КОЛОДА</span><span>60 ОБРАЗОВ</span></div>
+    <div class="feature-grid">
+      <div class="feature-text">
+        <span class="roman">I</span>
+        <h2>Три пространства.<br><em>Один разговор.</em></h2>
+        <p>Ресурс. Тень. Действие. Три способа посмотреть на один вопрос с разных сторон.</p>
+        <button class="line-btn" data-screen="deck">Открыть колоду <span>→</span></button>
+      </div>
+      <div class="feature-art"><div class="orb">✦</div><span>01—60</span></div>
+    </div>
+  </div>
+
+  <div class="sections">
+    <div class="section-head"><span>ПРОСТРАНСТВА</span><small>ВЫБЕРИ ТОЧКУ ВХОДА</small></div>
+    <button class="space" data-filter="resource"><span>01</span><div><b>Ресурс и опора</b><small>20 образов</small></div><i>↗</i></button>
+    <button class="space" data-filter="shadow"><span>02</span><div><b>Тень и препятствия</b><small>20 образов</small></div><i>↗</i></button>
+    <button class="space" data-filter="action"><span>03</span><div><b>Действие и трансформация</b><small>20 образов</small></div><i>↗</i></button>
+  </div>
+
+  <div class="quote">«Карты не решают за тебя.<br><em>Они помогают увидеть то, что уже есть.</em>»</div>
+</section>
+
+<section id="draw" class="screen">
+  <button class="back" data-screen="home">← Назад</button>
+  <div class="draw-top"><span>ОДНА КАРТА</span><small id="drawStep">ШАГ 01 / 02</small></div>
+  <div class="draw-title"><h2 id="drawTitle">Теперь слушай.</h2><p id="drawSub">Вопрос уже передан. Осталось открыть образ.</p></div>
+  <div class="draw-card-wrap"><div id="drawCard" class="draw-card"><div class="card-back"><span>✦</span><small>КАРТЫ ЗНАЮТ</small></div></div></div>
+  <button id="revealBtn" class="primary">Открыть карту <b>↓</b></button>
+  <div id="reading" class="reading"></div>
+</section>
+
+<section id="deck" class="screen">
+  <div class="page-head"><div><span>КОЛОДА</span><h2>Образы</h2></div><b>60</b></div>
+  <div class="filter-row">
+    <button class="filter active" data-cat="all">Все</button><button class="filter" data-cat="resource">I Ресурс</button><button class="filter" data-cat="shadow">II Тень</button><button class="filter" data-cat="action">III Действие</button>
+  </div>
+  <div id="cardGrid" class="card-grid"></div>
+</section>
+
+<section id="detail" class="screen">
+ <button class="back" data-screen="deck">← Колода</button>
+ <div id="detailContent"></div>
+</section>
+
+<section id="spread" class="screen">
+ <div class="page-head"><div><span>РАСКЛАД</span><h2>Три взгляда</h2></div><b>01</b></div>
+ <p class="intro">Один вопрос — три позиции. Что происходит, что остаётся в тени и куда направить внимание.</p>
+ <textarea id="spreadQuestion" class="spread-input" maxlength="240" placeholder="О чём хочешь спросить колоду?"></textarea>
+ <div class="spread-picks"><button class="pick active" data-n="3">3 карты</button><button class="pick" data-n="5">5 карт</button></div>
+ <button id="spreadBtn" class="primary wide">Начать расклад <b>→</b></button>
+ <div id="spreadResult"></div>
+</section>
+
+<section id="history" class="screen">
+ <div class="page-head"><div><span>АРХИВ</span><h2>История</h2></div></div>
+ <p class="intro">Твои предыдущие разговоры с колодой.</p>
+ <div id="historyList"></div>
+</section>
+
+<section id="about" class="screen">
+ <button class="back" data-screen="home">← Назад</button>
+ <div class="about-page"><span>КАРТЫ ЗНАЮТ</span><h2>Не предсказывают.<br><em>Подсвечивают.</em></h2><p>Универсальная колода образов для личных вопросов, наблюдения за собой и поиска следующего шага.</p><div class="about-rule"></div><small>60 КАРТ · 3 ПРОСТРАНСТВА · ТВОЙ ВОПРОС</small></div>
+</section>
+</main>
+
+<nav class="bottom">
+<button class="nav active" data-screen="home"><span>⌂</span><small>Начало</small></button>
+<button class="nav" data-screen="deck"><span>◇</span><small>Колода</small></button>
+<button class="nav" data-screen="spread"><span>△</span><small>Расклад</small></button>
+<button class="nav" data-screen="history"><span>◷</span><small>История</small></button>
+</nav>
+</div>
+<script src="app.js?v=7.0"></script>
+</body>
+</html>
