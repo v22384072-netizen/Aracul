@@ -1,0 +1,9 @@
+/* V29 — личный след */
+.v29-profile{margin:0 0 18px;padding:18px;border:1px solid rgba(238,233,223,.09);background:rgba(255,255,255,.018);border-radius:18px}
+.v29-profile small{font-family:"DM Mono",monospace;font-size:10px;letter-spacing:.14em;color:#c28b72}
+.v29-profile h3{margin:7px 0 6px;font:500 22px "Playfair Display",serif;color:#eee9df}
+.v29-profile p{margin:0;color:#96949a;font-size:13px;line-height:1.55}
+.v29-profile p b{color:#eee9df;font-weight:500}
+.v29-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px}
+.v29-tags span{padding:7px 10px;border:1px solid rgba(194,139,114,.22);border-radius:999px;color:#c8c3ba;font:10px "DM Mono",monospace}
+.v29-muted{margin-top:12px!important;font-size:12px!important}
