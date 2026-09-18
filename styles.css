@@ -144,3 +144,13 @@ main{background:transparent}
 @keyframes echoIn{to{opacity:1;transform:none}}
 #draw.active.revealed .question-echo{opacity:.42;transition:opacity 1.2s}
 #draw.active.revealed .question-echo span{font-size:14px}
+
+/* V8.7 — personalized answer */
+.answer-intro{padding:26px 0 30px;border-bottom:1px solid rgba(238,233,223,.13);position:relative}
+.answer-intro small{color:#c28b72;font:500 8px var(--mono);letter-spacing:.18em}
+.answer-intro h3{margin:12px 0 0;max-width:680px;color:#eee9df;font:400 27px/1.35 var(--serif);font-style:italic}
+.reading-close{margin:44px 0 12px;padding:32px 0 10px;text-align:center;border-top:1px solid rgba(238,233,223,.2)}
+.reading-close span{display:block;color:#c28b72;font-size:18px;margin-bottom:12px}
+.reading-close b,.reading-close em{display:block;font-family:var(--serif);font-weight:400}
+.reading-close b{font-size:22px;color:#eee9df}
+.reading-close em{margin-top:7px;color:#77757d;font-size:15px}
