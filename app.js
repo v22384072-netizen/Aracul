@@ -627,7 +627,7 @@ function beginQuestion(){const q=$('#homeQuestion').value.trim();currentQuestion
 function startDraw(){screen('draw');resetDraw()}
 function startFromHome(){beginQuestion()}
 function ritualReady(){const q=$('#ritualQuestion').textContent.replace(/^«|»$/g,'');currentQuestion=q;screen('draw');resetDraw();$('#drawStep').textContent='ПЕРЕД ТЕБЯ — КОЛОДА';$('#drawHint').textContent='Сосредоточься на своём вопросе. Когда почувствуешь готовность — прикоснись к колоде.';haptic('medium')}
-function resetDraw(){const big=$('#big');big.className='oracle-card face-down';big.innerHTML='<div class="card-back-inner"><span>К</span><i>✦</i><small>КАРТЫ ЗНАЮТ</small></div>';$('#drawStep').textContent='ОДНА КАРТА';$('#drawHint').textContent=currentQuestion?'Вопрос уже внутри колоды. Когда почувствуешь готовность — прикоснись к карте.':'Сформулируй вопрос внутри себя и открой карту.';$('#reveal').textContent='Открыть карту';$('#reveal').disabled=false}
+function resetDraw(){const big=$('#big');big.className='oracle-card face-down';big.innerHTML='<div class="card-back-inner"><span>К</span><i>✦</i><small>КАРТЫ ЗНАЮТ</small></div>';$('#reveal').style.display='block';$('#drawStep').textContent='ОДНА КАРТА';$('#drawHint').textContent=currentQuestion?'Вопрос уже внутри колоды. Когда почувствуешь готовность — прикоснись к карте.':'Сформулируй вопрос внутри себя и открой карту.';$('#reveal').textContent='Открыть карту';$('#reveal').disabled=false}
 
 
 
@@ -1072,10 +1072,11 @@ function reveal(){
   big.classList.add('turning');
   setTimeout(()=>{
     big.classList.remove('face-down','turning');
-    big.innerHTML=`<div class="card-face">${cardImgTag(c)}<span class="card-no">${String(c.id).padStart(2,'0')}</span><div class="card-symbol">✦</div><strong>${esc(c.title)}</strong><small>${names[c.category]}</small></div>`;
+    big.innerHTML=`<div class="card-face">${cardImgTag(c)}</div>`;
     $('#drawStep').textContent='КАРТА ОТКРЫТА';
     const r=readingFor(c,currentQuestion);
-    $('#drawHint').textContent='«'+r.meaning+'»';
+    $('#drawHint').textContent='Карта открыта. Теперь читай её послание ниже.';
+    $('#reveal').style.display='none';
     showReading(c,currentQuestion);
     save({type:'card',question:currentQuestion,cards:[c.id],context:contextOf(currentQuestion)});
     haptic('success');
