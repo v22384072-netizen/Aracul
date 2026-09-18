@@ -62,6 +62,22 @@ $("#spreadBtn").onclick=()=>{const q=$("#spreadQuestion").value.trim()||"Что 
 function saveHistory(q,nums){const h=JSON.parse(localStorage.getItem("cardsKnownHistory")||"[]");h.unshift({q,nums,date:new Date().toLocaleDateString("ru-RU",{day:"2-digit",month:"long"})});localStorage.setItem("cardsKnownHistory",JSON.stringify(h.slice(0,30)));renderHistory()}
 function renderHistory(){const h=JSON.parse(localStorage.getItem("cardsKnownHistory")||"[]");$("#historyList").innerHTML=h.length?h.map(x=>`<article class="history-item"><small>${x.nums.length===1?"ОДНА КАРТА":`РАСКЛАД · ${x.nums.length} КАРТ`}</small><time>${esc(x.date)}</time><p>«${esc(x.q)}»</p><div>${x.nums.map(n=>`<button data-open="${n}">${String(n).padStart(2,"0")} · ${esc(titles[n-1])}</button>`).join("")}</div></article>`).join(""):'<div class="empty">Здесь пока тихо.<br>Первый вопрос появится здесь.</div>';$$("#historyList [data-open]").forEach(b=>b.onclick=()=>openDetail(+b.dataset.open))}
 renderDeck();renderHistory();
-// V8.5 ritual timing + answer framing
+// V8.6 — immersive reveal + question echo
 const originalAsk=$("#askBtn").onclick;
-$("#askBtn").onclick=()=>{const q=$("#question").value.trim();if(!q){$("#question").focus();return}currentQuestion=q;const d=document.getElementById("draw");d.classList.remove("revealed","listening","ready");$("#drawStep").textContent="01 / 03";$("#drawTitle").textContent="Я слушаю.";$("#drawSub").textContent="Не меняй вопрос. Просто побудь с ним несколько секунд.";$("#drawCard").className="draw-card";$("#drawCard").innerHTML='<div class="back-design"><b>К</b><span>КАРТЫ ЗНАЮТ</span><i>✦</i></div>';$("#revealBtn").hidden=true;$("#reading").innerHTML="";showScreen("draw");d.classList.add("listening");setTimeout(()=>{if(!d.classList.contains("active"))return;d.classList.remove("listening");d.classList.add("ready");$("#drawStep").textContent="02 / 03";$("#drawTitle").textContent="Карта выбрана.";$("#drawSub").textContent="Когда будешь готов — открой её.";$("#revealBtn").hidden=false},1900)};
+$("#askBtn").onclick=()=>{const q=$("#question").value.trim();if(!q){$("#question").focus();return}currentQuestion=q;const d=document.getElementById("draw");d.classList.remove("revealed","listening","ready");$("#drawStep").textContent="01 / 03";$("#drawTitle").textContent="Я слушаю.";$("#drawSub").textContent="Не меняй вопрос. Просто побудь с ним несколько секунд.";$("#drawCard").className="draw-card";$("#drawCard").innerHTML='<div class="back-design"><b>К</b><span>КАРТЫ ЗНАЮТ</span><i>✦</i></div>';$("#revealBtn").hidden=true;$("#reading").innerHTML="";showScreen("draw");d.classList.add("listening");setTimeout(()=>{if(!d.classList.contains("active"))return;d.classList.remove("listening");d.classList.add("ready");document.getElementById("draw").classList.add("chosen");$("#drawStep").textContent="02 / 03";$("#drawTitle").textContent="Карта выбрана.";$("#drawSub").textContent="Когда будешь готов — открой её.";$("#revealBtn").hidden=false},1900)};
+
+function createQuestionEcho(){
+  const d=document.getElementById("draw");
+  let q=d.querySelector(".question-echo");
+  if(!q){q=document.createElement("div");q.className="question-echo";d.insertBefore(q,d.firstChild)}
+  q.innerHTML='<small>ТВОЙ ВОПРОС</small><span></span>';
+  q.querySelector("span").textContent="«"+currentQuestion+"»";
+}
+const oldMagic=magicFX;
+magicFX=function(){
+  oldMagic();
+  const d=document.getElementById("draw");
+  d.classList.add("reveal-focus");
+  createQuestionEcho();
+  setTimeout(()=>d.classList.remove("reveal-focus"),1800);
+};
