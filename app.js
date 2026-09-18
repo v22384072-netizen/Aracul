@@ -1,90 +1,24 @@
 const titles=["Фундамент","Золотая жила","Сад изобилия","Полноводная река","Колодец предков","Хранитель порога","Скала","Солнце в зените","Плодородная земля","Открытая дверь","Рог изобилия","Мост","Крепость","Феникс","Источник","Якорь","Древо рода","Свеча в темноте","Жемчужина","Компас","Якорь на ноге","Золотая клетка","Тень великана","Пустой кошелёк","Песочные часы","Разбитая копилка","Лабиринт","Нищий с золотой чашей","Терновый куст","Слепой банкир","Дырявое ведро","Крыса в колесе","Спящий дракон","Зеркало кривое","Тонущий корабль","Оковы","Прокрустово ложе","Две маски","Лестница в небо","Засохший колодец","Сеятель","Мельница","Кузнец","Торговец","Строитель","Моряк","Алхимик","Пчела","Водопад","Воздушный змей","Весы","Змея, кусающая хвост","Ключ и замок","Птица в полёте","Радуга после грозы","Факел","Вулкан","Хамелеон","Уроборос разорванный","Золотой ребёнок"];
 const cats=[...Array(20).fill("resource"),...Array(20).fill("shadow"),...Array(20).fill("action")];
 const catNames={resource:"Ресурс и опора",shadow:"Тень и препятствия",action:"Действие и трансформация"};
-const meanings=[
-"Начни с основы. То, что сейчас кажется медленным, создаёт устойчивость на будущее.","Внутри уже есть ресурс, который пока не используется в полную силу.","Посмотри, что уже приносит тебе жизнь, радость и ощущение достатка.","Тебе не обязательно толкать события. Иногда правильный путь — войти в поток.","Важная часть ответа может быть связана с опытом, который уже есть в твоей истории.","Перед тобой граница между привычным и новым. Решение начинается с шага через неё.","Оставайся опорой для себя, даже если вокруг меняются обстоятельства.","Пришло время показать миру то, что ты умеешь.","Создай условия, в которых нужное сможет вырасти.","Возможность уже появилась. Вопрос не только в том, заметишь ли ты её.","Разреши себе принимать хорошее без необходимости сначала доказать, что ты его заслуживаешь.","Переход возможен, если перестать ждать идеального момента.","Сохрани своё пространство и границы. Они помогают тебе расти.","Старый этап заканчивается, освобождая место для нового.","Ищи источник, который может питать тебя регулярно, а не случайно.","Стабильность сейчас важнее резких движений.","Связь с прошлым может стать опорой, если не превращать её в ограничение.","Когда вокруг мало ясности, начни с маленького собственного света.","Ценность не всегда лежит на поверхности. Дай важному время проявиться.","Сверься с тем, куда ты действительно хочешь прийти.","Посмотри, что удерживает тебя сильнее, чем ты сам того хочешь.","Удобство не всегда означает свободу. Проверь цену привычного.","Страх может делать препятствие больше, чем оно есть на самом деле.","Пустота иногда освобождает место для другого.","Время — ресурс. Обрати внимание, куда уходят часы и внимание.","Старые представления могут продолжать влиять на сегодняшние решения.","Ты можешь усложнять путь, хотя рядом уже есть более простой взгляд.","Не обесценивай то, что уже умеешь и имеешь.","Рост редко происходит без сопротивления. Ищи проход, а не идеальную дорогу.","Проверь, не измеряешь ли ты ценность чужой линейкой.","Посмотри, где теряется результат: внимание, силы, деньги или время.","Повторение без изменения не приводит к новому результату.","Сила может быть рядом, но пока не используется.","Твоё восприятие ситуации может быть искажено прошлым опытом.","Маленькая проблема требует внимания до того, как станет большой.","Ограничение может казаться вечным, хотя ключ уже рядом.","Не подгоняй себя под чужую форму.","Сними роль, которая больше не соответствует тебе.","Быстрый путь не всегда ведёт туда, куда тебе нужно.","Старый источник исчерпан. Пора искать новый способ получать результат.","Результат начинается с посева, а не с ожидания урожая.","Идея становится ценностью, когда появляется действие.","Сделай то, что требует мастерства и терпения.","Посмотри на свой обмен с миром: что отдаёшь и что получаешь.","Собери отдельные усилия в систему.","Двигайся, даже если берег пока не виден.","Попробуй превратить привычное в нечто более ценное.","Небольшие действия, повторённые много раз, создают большой результат.","Тебе доступно больше движения, чем кажется. Не бойся масштаба.","Свобода требует баланса, а не полного отказа от контроля.","Проверь равновесие между тем, что получаешь, и тем, что отдаёшь.","Замечай циклы, которые повторяются.","Найди конкретный навык или знание, которое открывает следующую дверь.","Ослабь лишний контроль и позволь событиям развиваться естественно.","После напряжения появляется новое пространство. Не спеши возвращаться в старое.","Не ищи сразу весь путь. Определи ближайший шаг.","Энергия, которую ты долго сдерживал, просится в действие.","Гибкость сейчас полезнее жёсткого плана.","Разрыв старого цикла освобождает место для другого.","Верни в ситуацию любопытство, лёгкость и удовольствие от процесса."
-];
-function img(n){return `cards/${String(n).padStart(2,"0")}.jpg`}
-function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
-let currentQuestion="", currentCat="all", spreadN=3;
-const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-
-function showScreen(id){
- $$(".screen").forEach(x=>x.classList.toggle("active",x.id===id));
- $$(".nav").forEach(x=>x.classList.toggle("active",x.dataset.screen===id));
- window.scrollTo({top:0,behavior:"smooth"});
-}
+const meanings=["Начни с основы. То, что сейчас кажется медленным, создаёт устойчивость на будущее.","Внутри уже есть ресурс, который пока не используется в полную силу.","Посмотри, что уже приносит тебе жизнь, радость и ощущение достатка.","Тебе не обязательно толкать события. Иногда правильный путь — войти в поток.","Важная часть ответа может быть связана с опытом, который уже есть в твоей истории.","Перед тобой граница между привычным и новым. Решение начинается с шага через неё.","Оставайся опорой для себя, даже если вокруг меняются обстоятельства.","Пришло время показать миру то, что ты умеешь.","Создай условия, в которых нужное сможет вырасти.","Возможность уже появилась. Вопрос не только в том, заметишь ли ты её.","Разреши себе принимать хорошее без необходимости сначала доказать, что ты его заслуживаешь.","Переход возможен, если перестать ждать идеального момента.","Сохрани своё пространство и границы. Они помогают тебе расти.","Старый этап заканчивается, освобождая место для нового.","Ищи источник, который может питать тебя регулярно, а не случайно.","Стабильность сейчас важнее резких движений.","Связь с прошлым может стать опорой, если не превращать её в ограничение.","Когда вокруг мало ясности, начни с маленького собственного света.","Ценность не всегда лежит на поверхности. Дай важному время проявиться.","Сверься с тем, куда ты действительно хочешь прийти.","Посмотри, что удерживает тебя сильнее, чем ты сам того хочешь.","Удобство не всегда означает свободу. Проверь цену привычного.","Страх может делать препятствие больше, чем оно есть на самом деле.","Пустота иногда освобождает место для другого.","Время — ресурс. Обрати внимание, куда уходят часы и внимание.","Старые представления могут продолжать влиять на сегодняшние решения.","Ты можешь усложнять путь, хотя рядом уже есть более простой взгляд.","Не обесценивай то, что уже умеешь и имеешь.","Рост редко происходит без сопротивления. Ищи проход, а не идеальную дорогу.","Проверь, не измеряешь ли ты ценность чужой линейкой.","Посмотри, где теряется результат: внимание, силы, деньги или время.","Повторение без изменения не приводит к новому результату.","Сила может быть рядом, но пока не используется.","Твоё восприятие ситуации может быть искажено прошлым опытом.","Маленькая проблема требует внимания до того, как станет большой.","Ограничение может казаться вечным, хотя ключ уже рядом.","Не подгоняй себя под чужую форму.","Сними роль, которая больше не соответствует тебе.","Быстрый путь не всегда ведёт туда, куда тебе нужно.","Старый источник исчерпан. Пора искать новый способ получать результат.","Результат начинается с посева, а не с ожидания урожая.","Идея становится ценностью, когда появляется действие.","Сделай то, что требует мастерства и терпения.","Посмотри на свой обмен с миром: что отдаёшь и что получаешь.","Собери отдельные усилия в систему.","Двигайся, даже если берег пока не виден.","Попробуй превратить привычное в нечто более ценное.","Небольшие действия, повторённые много раз, создают большой результат.","Тебе доступно больше движения, чем кажется. Не бойся масштаба.","Свобода требует баланса, а не полного отказа от контроля.","Проверь равновесие между тем, что получаешь, и тем, что отдаёшь.","Замечай циклы, которые повторяются.","Найди конкретный навык или знание, которое открывает следующую дверь.","Ослабь лишний контроль и позволь событиям развиваться естественно.","После напряжения появляется новое пространство. Не спеши возвращаться в старое.","Не ищи сразу весь путь. Определи ближайший шаг.","Энергия, которую ты долго сдерживал, просится в действие.","Гибкость сейчас полезнее жёсткого плана.","Разрыв старого цикла освобождает место для другого.","Верни в ситуацию любопытство, лёгкость и удовольствие от процесса."];
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+let currentQuestion="",currentCat="all",spreadN=3;
+const img=n=>`cards/${String(n).padStart(2,"0")}.jpg`;
+const esc=s=>String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+const card=n=>({id:n,title:titles[n-1],cat:cats[n-1],meaning:meanings[n-1]});
+function showScreen(id){$$(".screen").forEach(x=>x.classList.toggle("active",x.id===id));$$(".nav-item").forEach(x=>x.classList.toggle("active",x.dataset.screen===id));window.scrollTo(0,0)}
 $$("[data-screen]").forEach(b=>b.addEventListener("click",()=>showScreen(b.dataset.screen)));
-
 $("#aboutBtn").onclick=()=>showScreen("about");
-$("#question").addEventListener("input",e=>$("#count").textContent=`${e.target.value.length} / 240`);
-$("#askBtn").onclick=()=>{
- const q=$("#question").value.trim();
- if(!q){$("#question").focus();return}
- currentQuestion=q;
- $("#drawTitle").textContent="Теперь слушай.";
- $("#drawSub").textContent="Вопрос уже передан. Осталось открыть образ.";
- $("#drawStep").textContent="ШАГ 01 / 02";
- $("#drawCard").className="draw-card";
- $("#drawCard").innerHTML='<div class="card-back"><span>✦</span><small>КАРТЫ ЗНАЮТ</small></div>';
- $("#revealBtn").hidden=false;
- $("#reading").innerHTML="";
- showScreen("draw");
-};
-function card(n){return {id:n,title:titles[n-1],cat:cats[n-1],meaning:meanings[n-1]}}
-function cardHTML(c,small=false){
- const path=img(c.id);
- return `<article class="mini ${small?"small":""}" data-card="${c.id}">
-   <img src="${path}" alt="${esc(c.title)}" onerror="this.style.display='none';this.parentElement.classList.add('no-image')">
-   <div class="mini-info"><span>${String(c.id).padStart(2,"0")} · ${catNames[c.cat]}</span><b>${esc(c.title)}</b></div>
- </article>`
-}
-function renderDeck(){
- const list=Array.from({length:60},(_,i)=>card(i+1)).filter(c=>currentCat==="all"||c.cat===currentCat);
- $("#cardGrid").innerHTML=list.map(c=>cardHTML(c)).join("");
- $$("#cardGrid [data-card]").forEach(x=>x.onclick=()=>openDetail(+x.dataset.card));
-}
-function openDetail(n){
- const c=card(n);
- $("#detailContent").innerHTML=`<div class="detail-art"><img src="${img(n)}" alt="${esc(c.title)}" onerror="this.style.display='none'"></div>
- <div class="detail-copy"><span>${String(n).padStart(2,"0")} · ${catNames[c.cat]}</span><h2>${esc(c.title)}</h2><p>${esc(c.meaning)}</p><div class="detail-label">ВОПРОС КАРТЫ</div><p>Что этот образ помогает тебе увидеть прямо сейчас?</p></div>`;
- showScreen("detail");
-}
+$("#question").oninput=e=>$("#count").textContent=`${e.target.value.length} / 240`;
+$("#askBtn").onclick=()=>{const q=$("#question").value.trim();if(!q){$("#question").focus();return}currentQuestion=q;$("#drawStep").textContent="01 / 02";$("#drawTitle").textContent="Теперь — тишина.";$("#drawSub").textContent="Оставь вопрос здесь. Открой карту, когда будешь готов.";$("#drawCard").className="draw-card";$("#drawCard").innerHTML='<div class="back-design"><b>К</b><span>КАРТЫ ЗНАЮТ</span><i>✦</i></div>';$("#revealBtn").hidden=false;$("#reading").innerHTML="";showScreen("draw")};
+function cardHTML(c){return `<article class="mini" data-card="${c.id}"><img src="${img(c.id)}" alt="${esc(c.title)}" onerror="this.style.display='none';this.parentElement.classList.add('no-image')"><div class="mini-info"><span>${String(c.id).padStart(2,"0")} · ${catNames[c.cat]}</span><b>${esc(c.title)}</b></div></article>`}
+function renderDeck(){const list=Array.from({length:60},(_,i)=>card(i+1)).filter(c=>currentCat==="all"||c.cat===currentCat);$("#cardGrid").innerHTML=list.map(cardHTML).join("");$$("#cardGrid [data-card]").forEach(x=>x.onclick=()=>openDetail(+x.dataset.card))}
+function openDetail(n){const c=card(n);$("#detailContent").innerHTML=`<div class="detail-wrap"><div class="detail-art"><img src="${img(n)}" alt="${esc(c.title)}" onerror="this.style.display='none'"></div><div class="detail-copy"><small>${String(n).padStart(2,"0")} · ${catNames[c.cat]}</small><h2>${esc(c.title)}</h2><p>${esc(c.meaning)}</p><div class="detail-label">ВОПРОС КАРТЫ</div><p class="detail-question">Что этот образ помогает тебе увидеть прямо сейчас?</p></div></div>`;showScreen("detail")}
 $$(".filter").forEach(b=>b.onclick=()=>{$$(".filter").forEach(x=>x.classList.remove("active"));b.classList.add("active");currentCat=b.dataset.cat;renderDeck()});
-$$(".space").forEach(b=>b.onclick=()=>{currentCat=b.dataset.filter;$$(".filter").forEach(x=>x.classList.toggle("active",x.dataset.cat===currentCat));renderDeck();showScreen("deck")});
-$("#revealBtn").onclick=()=>{
- const n=Math.floor(Math.random()*60)+1,c=card(n);
- $("#drawStep").textContent="ШАГ 02 / 02";
- $("#drawTitle").textContent=c.title;
- $("#drawSub").textContent=catNames[c.cat];
- $("#drawCard").className="draw-card open";
- $("#drawCard").innerHTML=`<img src="${img(n)}" alt="${esc(c.title)}" onerror="this.style.display='none'">`;
- $("#revealBtn").hidden=true;
- $("#reading").innerHTML=`<div class="read-block read-question"><small>ТЫ СПРОСИЛ</small><p>«${esc(currentQuestion)}»</p></div>
- <div class="read-block"><small>ЧТО КАРТА ГОВОРИТ</small><p>${esc(c.meaning)}</p></div>
- <div class="read-block"><small>ТЕНЬ</small><p>Не позволяй старой привычке или страху решать за тебя.</p></div>
- <div class="read-block"><small>НАПРАВЛЕНИЕ</small><p>Выбери один конкретный шаг, который соответствует этому образу.</p></div>
- <div class="read-block"><small>ВОПРОС КАРТЫ</small><p>Что ты уже знаешь, но пока не разрешаешь себе сделать?</p></div>`;
- $("#reading").scrollIntoView({behavior:"smooth",block:"start"});
- saveHistory(currentQuestion,[n]);
-};
+$("#revealBtn").onclick=()=>{const n=Math.floor(Math.random()*60)+1,c=card(n);$("#drawStep").textContent="02 / 02";$("#drawTitle").textContent=c.title;$("#drawSub").textContent=catNames[c.cat];$("#drawCard").className="draw-card open";$("#drawCard").innerHTML=`<img src="${img(n)}" alt="${esc(c.title)}" onerror="this.style.display='none'">`;$("#revealBtn").hidden=true;$("#reading").innerHTML=`<div class="read-block read-question"><small>ТЫ СПРОСИЛ</small><p>«${esc(currentQuestion)}»</p></div><div class="read-block"><small>ЧТО КАРТА ГОВОРИТ</small><p>${esc(c.meaning)}</p></div><div class="read-block"><small>ТЕНЬ</small><p>Не позволяй старой привычке или страху решать за тебя.</p></div><div class="read-block"><small>НАПРАВЛЕНИЕ</small><p>Выбери один конкретный шаг, который соответствует этому образу.</p></div><div class="read-block"><small>ВОПРОС КАРТЫ</small><p>Что ты уже знаешь, но пока не разрешаешь себе сделать?</p></div>`;saveHistory(currentQuestion,[n]);setTimeout(()=>$("#reading").scrollIntoView({behavior:"smooth",block:"start"}),80)};
 $$(".pick").forEach(b=>b.onclick=()=>{$$(".pick").forEach(x=>x.classList.remove("active"));b.classList.add("active");spreadN=+b.dataset.n});
-$("#spreadBtn").onclick=()=>{
- const q=$("#spreadQuestion").value.trim()||"Что мне важно увидеть сейчас?";
- const nums=[];while(nums.length<spreadN){const n=Math.floor(Math.random()*60)+1;if(!nums.includes(n))nums.push(n)}
- const labels=spreadN===3?["Что происходит","Что скрыто","Куда смотреть"]:["Сейчас","Основание","Тень","Ресурс","Следующий шаг"];
- $("#spreadResult").innerHTML=`<div class="spread-cards">${nums.map((n,i)=>{const c=card(n);return `<div class="spread-card"><img src="${img(n)}" alt="${esc(c.title)}" onerror="this.style.display='none'"><label>${labels[i]}</label><strong>${esc(c.title)}</strong></div>`}).join("")}</div><div class="reading" style="display:block"><div class="read-block"><small>ОБЩАЯ ЛИНИЯ</small><p>Посмотри на карты как на последовательность: что уже происходит, что требует внимания и какой шаг естественно следует дальше.</p></div></div>`;
- saveHistory(q,nums);
-};
-function saveHistory(q,nums){
- const h=JSON.parse(localStorage.getItem("cardsKnownHistory")||"[]");
- h.unshift({q,nums,date:new Date().toLocaleDateString("ru-RU",{day:"2-digit",month:"long"})});
- localStorage.setItem("cardsKnownHistory",JSON.stringify(h.slice(0,30)));
- renderHistory();
-}
-function renderHistory(){
- const h=JSON.parse(localStorage.getItem("cardsKnownHistory")||"[]");
- $("#historyList").innerHTML=h.length?h.map(x=>`<article class="history-item"><small>${x.nums.length===1?"ОДНА КАРТА":`РАСКЛАД · ${x.nums.length} КАРТ`}</small><time>${esc(x.date)}</time><p>«${esc(x.q)}»</p><div>${x.nums.map(n=>`<button data-open="${n}">${String(n).padStart(2,"0")} · ${esc(titles[n-1])}</button>`).join("")}</div></article>`).join(""):'<div class="empty">Здесь появятся твои разговоры с колодой.</div>';
- $$("#historyList [data-open]").forEach(b=>b.onclick=()=>openDetail(+b.dataset.open));
-}
+$("#spreadBtn").onclick=()=>{const q=$("#spreadQuestion").value.trim()||"Что мне важно увидеть сейчас?";const nums=[];while(nums.length<spreadN){const n=Math.floor(Math.random()*60)+1;if(!nums.includes(n))nums.push(n)}const labels=spreadN===3?["Что происходит","Что скрыто","Куда смотреть"]:["Сейчас","Основание","Тень","Ресурс","Следующий шаг"];$("#spreadResult").innerHTML=`<div class="spread-cards">${nums.map((n,i)=>{const c=card(n);return `<div class="spread-card"><img src="${img(n)}" alt="${esc(c.title)}" onerror="this.style.display='none'"><label>${labels[i]}</label><strong>${esc(c.title)}</strong></div>`}).join("")}</div><div class="spread-result-line"><small>ОБЩАЯ ЛИНИЯ</small><p>Посмотри на карты как на последовательность: что уже происходит, что требует внимания и какой шаг естественно следует дальше.</p></div>`;saveHistory(q,nums)};
+function saveHistory(q,nums){const h=JSON.parse(localStorage.getItem("cardsKnownHistory")||"[]");h.unshift({q,nums,date:new Date().toLocaleDateString("ru-RU",{day:"2-digit",month:"long"})});localStorage.setItem("cardsKnownHistory",JSON.stringify(h.slice(0,30)));renderHistory()}
+function renderHistory(){const h=JSON.parse(localStorage.getItem("cardsKnownHistory")||"[]");$("#historyList").innerHTML=h.length?h.map(x=>`<article class="history-item"><small>${x.nums.length===1?"ОДНА КАРТА":`РАСКЛАД · ${x.nums.length} КАРТ`}</small><time>${esc(x.date)}</time><p>«${esc(x.q)}»</p><div>${x.nums.map(n=>`<button data-open="${n}">${String(n).padStart(2,"0")} · ${esc(titles[n-1])}</button>`).join("")}</div></article>`).join(""):'<div class="empty">Здесь пока тихо.<br>Первый вопрос появится здесь.</div>';$$("#historyList [data-open]").forEach(b=>b.onclick=()=>openDetail(+b.dataset.open))}
 renderDeck();renderHistory();
