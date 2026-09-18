@@ -118,3 +118,17 @@ main{background:transparent}
 #draw.active .reveal:before{content:"";position:absolute;inset:-80%;background:linear-gradient(110deg,transparent 42%,rgba(255,255,255,.35) 50%,transparent 58%);transform:translateX(-60%) rotate(8deg);animation:buttonShimmer 4s ease-in-out infinite}
 @keyframes buttonShimmer{0%,55%{transform:translateX(-65%) rotate(8deg)}72%,100%{transform:translateX(65%) rotate(8deg)}}
 @media(max-width:700px){#draw.active .card-stage:after{height:120%}}
+
+/* V8.5 — ritual states */
+#draw.active.listening .ritual-copy h2{animation:listenBreath 1.9s ease-in-out both}
+#draw.active.listening .card-stage{filter:blur(2px);opacity:.62}
+#draw.active.listening .draw-card{animation:listenCard 1.9s ease-in-out both!important}
+#draw.active.listening .reveal{opacity:0;pointer-events:none}
+#draw.active.ready .ritual-copy h2{animation:readyWord .7s cubic-bezier(.16,1,.3,1) both}
+#draw.active.ready .draw-card{animation:readyCard .9s cubic-bezier(.16,1,.3,1) both}
+#draw.active.ready .card-stage:before{opacity:.72;animation:aura 2.5s ease-in-out infinite}
+@keyframes listenBreath{0%{opacity:.25;filter:blur(3px);transform:scale(.98)}50%{opacity:1;filter:none;transform:scale(1.01)}100%{opacity:.8;filter:none;transform:none}}
+@keyframes listenCard{0%,100%{transform:translateY(4px) scale(.97);filter:brightness(.75)}50%{transform:translateY(-5px) scale(1);filter:brightness(1.05)}}
+@keyframes readyWord{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes readyCard{from{opacity:.65;transform:translateY(12px) scale(.96)}to{opacity:1;transform:none}}
+#draw.active.revealed .ritual-copy h2{font-style:normal}
