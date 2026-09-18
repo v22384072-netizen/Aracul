@@ -1001,3 +1001,41 @@ function interpretSpread(){
   result.scrollIntoView({behavior:'smooth',block:'start'});
   haptic('success');
 }
+
+
+/* Финальная полировка диалога.
+   В режиме вопроса показываем только трактовку, относящуюся к выбранному контексту.
+   Не повторяем служебные фразы и не выводим ключевые слова вопроса как "анализ". */
+function personalLead(c,q=''){
+  const ctx=contextOf(q);
+  if(ctx==='money') return c.meaning;
+  const text=universalReadings[c.id]||c.meaning;
+  const intro={
+    relations:'В твоём вопросе об отношениях эта карта говорит о',
+    work:'В вопросе о деятельности эта карта говорит о',
+    day:'Для твоего дня эта карта говорит о',
+    decision:'Если смотреть на твой выбор, карта говорит о',
+    inner:'Если смотреть на твоё состояние, карта говорит о',
+    people:'В вопросе о людях карта говорит о',
+    general:'В твоём вопросе карта говорит о'
+  }[ctx]||'В твоём вопросе карта говорит о';
+  return intro+' '+text.charAt(0).toLowerCase()+text.slice(1);
+}
+
+function reveal(){
+  const c=random();
+  $('#reveal').disabled=true;
+  haptic('heavy');
+  const big=$('#big');
+  big.classList.add('turning');
+  setTimeout(()=>{
+    big.classList.remove('face-down','turning');
+    big.innerHTML=`<div class="card-face">${cardImgTag(c)}<span class="card-no">${String(c.id).padStart(2,'0')}</span><div class="card-symbol">✦</div><strong>${esc(c.title)}</strong><small>${names[c.category]}</small></div>`;
+    $('#drawStep').textContent='КАРТА ОТКРЫТА';
+    const r=readingFor(c,currentQuestion);
+    $('#drawHint').textContent='«'+r.meaning+'»';
+    showReading(c,currentQuestion);
+    save({type:'card',question:currentQuestion,cards:[c.id],context:contextOf(currentQuestion)});
+    haptic('success');
+  },650);
+}
