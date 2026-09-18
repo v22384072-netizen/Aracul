@@ -1,0 +1,28 @@
+/* V18 — ritual UX polish */
+.ritual{position:relative}
+.question-echo{margin:8px 0 24px;padding:12px 14px;border-left:1px solid rgba(194,139,114,.5);background:rgba(194,139,114,.035);opacity:.82;animation:echoIn .8s ease both}
+.question-echo small{display:block;color:#c28b72;font:500 8px var(--mono);letter-spacing:.16em;margin-bottom:6px}
+.question-echo span{display:block;color:#96949a;font:400 12px/1.45 var(--sans);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.draw-card{transform-style:preserve-3d;transition:transform .7s cubic-bezier(.2,.75,.2,1),filter .7s ease,box-shadow .7s ease}
+.draw-card.open{transform:rotateY(0deg) translateY(0) scale(1.01);box-shadow:0 28px 80px rgba(0,0,0,.34),0 0 0 1px rgba(194,139,114,.16)}
+.draw.listening .draw-card{animation:breath 1.9s ease-in-out infinite}
+.draw.ready .draw-card{box-shadow:0 0 0 1px rgba(194,139,114,.22),0 20px 65px rgba(194,139,114,.09)}
+.draw.ready .ritual-copy h2{animation:titleFocus .9s ease both}
+.reveal-focus .card-stage:after{content:"";position:absolute;inset:-28px;border:1px solid rgba(194,139,114,.08);border-radius:50%;animation:ring 1.8s ease-out both;pointer-events:none}
+.reading{scroll-margin-top:18px}
+.reading-head{animation:rise .55s ease both}
+.reading-hero{animation:rise .65s .08s ease both}
+.answer-intro{animation:rise .65s .15s ease both}
+.read-block{animation:rise .6s ease both}
+.read-block:nth-child(2){animation-delay:.04s}.read-block:nth-child(3){animation-delay:.08s}.read-block:nth-child(4){animation-delay:.12s}.read-block:nth-child(5){animation-delay:.16s}
+.reality-check{border-color:rgba(194,139,114,.38)!important;background:rgba(194,139,114,.045)!important}
+.reality-check small{color:#c28b72!important}
+.spread-result-line{animation:rise .55s ease both}
+.spread-card{transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
+.spread-card:hover{transform:translateY(-3px);border-color:rgba(194,139,114,.4);box-shadow:0 12px 30px rgba(0,0,0,.18)}
+@keyframes echoIn{from{opacity:0;transform:translateY(-8px)}to{opacity:.82;transform:none}}
+@keyframes breath{0%,100%{transform:scale(1)}50%{transform:scale(1.012)}}
+@keyframes titleFocus{from{opacity:.25;letter-spacing:.04em}to{opacity:1;letter-spacing:normal}}
+@keyframes ring{from{opacity:.6;transform:scale(.86)}to{opacity:0;transform:scale(1.12)}}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
