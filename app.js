@@ -55,43 +55,101 @@ $$("[data-screen]").forEach(b=>b.addEventListener("click",()=>showScreen(b.datas
 $("#aboutBtn").onclick=()=>showScreen("about");
 $("#question").oninput=e=>$("#count").textContent=`${e.target.value.length} / 240`;
 $("#askBtn").onclick=()=>{const q=$("#question").value.trim();if(!q){$("#question").focus();return}currentQuestion=q;document.getElementById("draw").classList.remove("revealed");$("#drawStep").textContent="01 / 02";$("#drawTitle").textContent="Теперь — тишина.";$("#drawSub").textContent="Оставь вопрос здесь. Открой карту, когда будешь готов.";$("#drawCard").className="draw-card";$("#drawCard").innerHTML='<div class="back-design"><b>К</b><span>КАРТЫ ЗНАЮТ</span><i>✦</i></div>';$("#revealBtn").hidden=false;$("#reading").innerHTML="";showScreen("draw")};
-function personalizedAnswer(n,q,c){
-  const t=q.toLowerCase();
+function questionProfile(q){
+  const t=String(q||"").toLowerCase().replace(/ё/g,"е");
   const topics=[
-    {keys:["деньг","доход","зарплат","заработ","финанс","богат","долг","кредит","расход","кошел","инвест","бизнес","работ","карьер"],name:"финансах и реализации"},
-    {keys:["любов","отношен","партнер","муж","жена","девуш","парн","семь","чувств"],name:"отношениях"},
-    {keys:["переезд","переез","город","страна","дом","квартир","жиль","мест","путешеств"],name:"перемене места"},
-    {keys:["выбор","решен","стоит ли","делать ли","куда","пойти","начать","бросить"],name:"выборе и решении"},
-    {keys:["страх","боюсь","тревог","сомнева","не уверен"],name:"страхе и сомнениях"},
-    {keys:["цель","мечт","план","будущ","получится","успе","достиг"],name:"цели и будущем"},
-    {keys:["здоров","болез","самочув","тело","сон"],name:"личном состоянии"}
+    {keys:["деньг","доход","зарплат","заработ","финанс","богат","долг","кредит","расход","кошел","инвест","бизнес"],name:"деньгах",focus:"цене, потоке денег и обмене ценностью"},
+    {keys:["работ","карьер","професс","началь","коллег","бизнес","проект","клиент","заказ"],name:"работе и реализации",focus:"ценности твоего труда, условий и результата"},
+    {keys:["любов","отношен","партнер","муж","жена","девуш","парн","семь","чувств","встреч"],name:"отношениях",focus:"связи, взаимности и границах"},
+    {keys:["переезд","переез","город","страна","дом","квартир","жиль","мест","путешеств"],name:"перемене места",focus:"выборе среды, опоры и готовности к перемене"},
+    {keys:["выбор","решен","стоит ли","делать ли","куда","пойти","начать","бросить","выбирать"],name:"выборе",focus:"том, что сейчас влияет на решение и его цену"},
+    {keys:["страх","боюсь","тревог","сомнева","не уверен","опас","риск"],name:"страхе и сомнениях",focus:"границе между реальным риском и внутренним ограничением"},
+    {keys:["цель","мечт","план","будущ","получится","успе","достиг","результат"],name:"цели и будущем",focus:"движении от намерения к проверяемому результату"},
+    {keys:["здоров","болез","самочув","тело","сон"],name:"личном состоянии",focus:"бережном отношении к себе и наблюдении за своим состоянием"},
+    {keys:["время","когда","срок","скоро","долго"],name:"сроках",focus:"темпе, готовности и признаках, по которым можно оценивать движение"}
   ];
-  const topic=topics.find(x=>x.keys.some(k=>t.includes(k)))||{name:"твоей ситуации"};
-  const openings=[
-    "По твоему вопросу карта говорит не о мгновенном результате, а о том, на что сейчас стоит опереться.",
-    "В контексте твоего вопроса этот образ указывает прежде всего на способ движения, а не на готовое «да» или «нет».",
-    "Если смотреть именно на твой вопрос, карта подсвечивает место, где сейчас формируется следующий поворот.",
-    "Для твоей ситуации эта карта звучит как приглашение посмотреть глубже очевидного."
-  ];
-  const closings=[
-    "Поэтому не пытайся получить весь ответ сразу: выбери один шаг, который можно проверить в реальности.",
-    "Здесь важнее не угадать будущее, а увидеть, какое решение уже созрело внутри тебя.",
-    "Проверь это через действие: реальность быстро покажет, где есть настоящий ресурс.",
-    "Оставь место для собственного выбора — карта показывает направление внимания, а не принимает решение вместо тебя."
-  ];
-  let specific=c.meaning;
-  if(n<=20) specific="Сначала укрепи опору: "+c.meaning.charAt(0).toLowerCase()+c.meaning.slice(1);
-  else if(n<=40) specific="Сначала убери то, что искажает ситуацию: "+c.meaning.charAt(0).toLowerCase()+c.meaning.slice(1);
-  else specific="Переведи понимание в действие: "+c.meaning.charAt(0).toLowerCase()+c.meaning.slice(1);
-  return openings[(n-1)%openings.length]+" В теме "+topic.name+" это означает: "+specific+" "+directions[n-1]+" "+closings[(n-1)%closings.length];
+  const topic=topics.find(x=>x.keys.some(k=>t.includes(k)))||{name:"твоей ситуации",focus:"главном узле твоего вопроса"};
+  const direct=/\b(стоит ли|можно ли|нужно ли|получится ли|будет ли|смогу ли|удастся ли|есть ли смысл|правильно ли)\b/.test(t);
+  const negative=/\b(не стоит|не надо|не могу|боюсь|страшно|плохо|провал|потеря|долг|проблем)/.test(t);
+  const words=t.split(/\s+/).filter(Boolean);
+  return {t,topic,direct,negative,seed:words.slice(0,12).join(" ")};
 }
+function answerHash(str){
+  let h=2166136261;
+  for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)}
+  return h>>>0;
+}
+function personalizedAnswer(n,q,c){
+  const p=questionProfile(q);
+  const h=answerHash(String(n)+"|"+p.t);
+  const open=[
+    "Ключевой момент здесь — не сам символ, а то, как он касается твоего вопроса.",
+    "В твоём вопросе эта карта цепляет конкретное место, которое легко недооценить.",
+    "Здесь карта говорит довольно приземлённо: смотри не на обещание результата, а на механизм.",
+    "Если читать эту карту именно через твой вопрос, акцент смещается на один конкретный узел.",
+    "Образ карты хорошо попадает в ситуацию, потому что показывает не случайность, а способ, которым она складывается."
+  ];
+  const bridges=[
+    "В теме %s это прежде всего про %s.",
+    "Для вопроса о %s важнее всего здесь %s.",
+    "В твоём случае это проявляется через %s.",
+    "Если убрать лишнее, карта указывает на %s.",
+    "На уровне твоего вопроса главный акцент — %s."
+  ];
+  const actions=[
+    "Проверь это одним конкретным действием, а не новым кругом размышлений.",
+    "Дай этому проверку реальностью: маленький шаг покажет больше, чем ещё один прогноз.",
+    "Сейчас полезнее получить факт, чем пытаться заранее угадать весь исход.",
+    "Не меняй всё сразу — измени именно тот элемент, который карта подсвечивает.",
+    "Сделай следующий шаг измеримым: тогда станет видно, работает ли направление."
+  ];
+  const closes=[
+    "Именно поэтому карта не забирает у тебя выбор — она показывает, где его цена и ресурс.",
+    "Ответ здесь не в гарантии будущего, а в том, что ты можешь проверить уже сейчас.",
+    "Если ситуация изменится, ориентируйся на факты, а не на первоначальный страх или надежду.",
+    "Смысл карты раскрывается через действие: после него станет понятнее, что в вопросе действительно твоё.",
+    "Не требуй от карты окончательного вердикта там, где решение зависит от твоих действий."
+  ];
+  const groupFrame=n<=20
+    ?"Карта показывает ресурс, который уже можно использовать."
+    :n<=40
+    ?"Карта подсвечивает то, что может искажать решение или отнимать ресурс."
+    :"Карта переводит понимание в изменение, которое можно начать делать.";
+  const directLead=p.direct
+    ?(n<=20
+      ?"Если отвечать прямо, карта скорее поддерживает движение — при условии, что ты используешь уже имеющуюся опору."
+      :n<=40
+      ?"Если отвечать прямо, карта скорее просит не спешить: сначала убери фактор, который искажает решение."
+      :"Если отвечать прямо, карта не даёт готового «да» без действия: результат зависит от того, что ты изменишь дальше.")
+    :"";
+  const meaning=c.meaning;
+  const shadow=shadows[n-1];
+  const direction=directions[n-1];
+  const bridge=bridges[h%bridges.length].replace("%s",p.topic.name).replace("%s",p.topic.focus);
+  const action=actions[Math.floor(h/7)%actions.length];
+  const close=closes[Math.floor(h/31)%closes.length];
+  const questionEcho=p.t.length>110?p.t.slice(0,110).replace(/\s+\S*$/,"")+"…":p.t;
+  return [
+    open[h%open.length],
+    "Ты спрашиваешь: «"+questionEcho+"»",
+    groupFrame,
+    directLead,
+    bridge,
+    meaning,
+    "Но важна и обратная сторона: "+shadow,
+    "Следующий ориентир: "+direction,
+    action,
+    close
+  ].filter(Boolean).join(" ");
+}
+
 function cardHTML(c){return `<article class="mini" data-card="${c.id}"><img src="${img(c.id)}" alt="${esc(c.title)}" onerror="this.style.display='none';this.parentElement.classList.add('no-image')"><div class="mini-info"><span>${String(c.id).padStart(2,"0")} · ${catNames[c.cat]}</span><b>${esc(c.title)}</b></div></article>`}
 function renderDeck(){const list=Array.from({length:60},(_,i)=>card(i+1)).filter(c=>currentCat==="all"||c.cat===currentCat);$("#cardGrid").innerHTML=list.map(cardHTML).join("");$$("#cardGrid [data-card]").forEach(x=>x.onclick=()=>openDetail(+x.dataset.card))}
 function openDetail(n){const c=card(n);$("#detailContent").innerHTML=`<div class="detail-wrap"><div class="detail-art"><img src="${img(n)}" alt="${esc(c.title)}" onerror="this.style.display='none'"></div><div class="detail-copy"><small>${String(n).padStart(2,"0")} · ${catNames[c.cat]}</small><h2>${esc(c.title)}</h2><p>${esc(c.meaning)}</p><div class="detail-label">ВОПРОС КАРТЫ</div><p class="detail-question">Что этот образ помогает тебе увидеть прямо сейчас?</p></div></div>`;showScreen("detail")}
 $$(".filter").forEach(b=>b.onclick=()=>{$$(".filter").forEach(x=>x.classList.remove("active"));b.classList.add("active");currentCat=b.dataset.cat;renderDeck()});
 $("#revealBtn").onclick=()=>{const d=document.getElementById("draw");d.classList.add("opening");ritualSound();haptic();magicFX();setTimeout(()=>d.classList.remove("opening"),1450);$("#revealBtn").classList.add("pulse");setTimeout(()=>$("#revealBtn").classList.remove("pulse"),900);const n=Math.floor(Math.random()*60)+1,c=card(n);$("#drawStep").textContent="02 / 02";$("#drawTitle").textContent=c.title;$("#drawSub").textContent=catNames[c.cat];document.getElementById("draw").classList.add("revealed");$("#drawCard").className="draw-card open";$("#drawCard").innerHTML=`<img src="${img(n)}" alt="${esc(c.title)}" onerror="this.style.display='none'">`;$("#revealBtn").hidden=true;$("#reading").innerHTML=`<div class="reading-head"><div><small>ТВОЁ ЧТЕНИЕ</small><h3>Карта отвечает на твой вопрос</h3></div><span class="reading-index">${String(n).padStart(2,"0")} / 60</span></div><div class="reading-hero"><div class="reading-thumb"><img src="${img(n)}" alt="${esc(c.title)}"></div><div class="reading-card-meta"><small>${catNames[c.cat]}</small><h4>${esc(c.title)}</h4><p>«${esc(currentQuestion)}»</p></div></div><div class="answer-intro"><small>ОТВЕТ ДЛЯ ТВОЕГО ВОПРОСА</small><h3>Не готовое предсказание — а взгляд на ситуацию через образ карты.</h3></div><div class="read-block"><small>СУТЬ ОТВЕТА</small><p>${esc(personalizedAnswer(n,currentQuestion,c))}</p></div><div class="read-block"><small>ТЕНЬ, КОТОРУЮ ВАЖНО УВИДЕТЬ</small><p>${esc(shadows[n-1])}</p></div><div class="read-block"><small>ТВОЁ НАПРАВЛЕНИЕ</small><p>${esc(directions[n-1])}</p></div><div class="read-block read-question"><small>ВОПРОС ОТ КАРТЫ</small><p>${questionCards[n-1]}</p></div><div class="reading-close"><span>✦</span><b>Теперь выбери свой следующий шаг.</b><em>Карта показала направление. Решение остаётся за тобой.</em><button class="new-question" id="newQuestionBtn">Задать новый вопрос <i>↗</i></button></div>`;saveHistory(currentQuestion,[n]);setTimeout(()=>$("#reading").scrollIntoView({behavior:"smooth",block:"start"}),80)};
 $$(".pick").forEach(b=>b.onclick=()=>{$$(".pick").forEach(x=>x.classList.remove("active"));b.classList.add("active");spreadN=+b.dataset.n});
-$("#spreadBtn").onclick=()=>{const q=$("#spreadQuestion").value.trim()||"Что мне важно увидеть сейчас?";const nums=[];while(nums.length<spreadN){const n=Math.floor(Math.random()*60)+1;if(!nums.includes(n))nums.push(n)}const labels=spreadN===3?["СИТУАЦИЯ","СКРЫТАЯ ПРИЧИНА","НАПРАВЛЕНИЕ"]:["СЕЙЧАС","ОСНОВАНИЕ","ТЕНЬ","РЕСУРС","СЛЕДУЮЩИЙ ШАГ"];const cs=nums.map(n=>card(n));const joined="Первая карта показывает исходную точку: "+cs[0].meaning+" Вторая раскрывает скрытый фактор: "+shadows[nums[1]-1]+" Третья переводит расклад в действие: "+directions[nums[2]-1]+" Вместе карты дают последовательность — что происходит, что влияет изнутри и куда направить внимание. Это не готовое предсказание, а способ увидеть собственный следующий шаг.";$("#spreadResult").innerHTML=`<div class="spread-cards">${nums.map((n,i)=>{const c=card(n);return `<div class="spread-card"><img src="${img(n)}" alt="${esc(c.title)}" onerror="this.style.display='none'"><label>${labels[i]}</label><strong>${esc(c.title)}</strong></div>`}).join("")}</div><div class="spread-result-line"><small>ЕДИНЫЙ ОТВЕТ</small><p>${esc(joined)}</p></div>`;saveHistory(q,nums)};
+$("#spreadBtn").onclick=()=>{const q=$("#spreadQuestion").value.trim()||"Что мне важно увидеть сейчас?";const nums=[];while(nums.length<spreadN){const n=Math.floor(Math.random()*60)+1;if(!nums.includes(n))nums.push(n)}const labels=spreadN===3?["СИТУАЦИЯ","СКРЫТАЯ ПРИЧИНА","НАПРАВЛЕНИЕ"]:["СЕЙЧАС","ОСНОВАНИЕ","ТЕНЬ","РЕСУРС","СЛЕДУЮЩИЙ ШАГ"];const cs=nums.map(n=>card(n));const roleTexts=nums.map((n,i)=>{const c=card(n);if(spreadN===3){if(i===0)return "Ситуация: "+c.meaning;if(i===1)return "Скрытая причина: "+shadows[n-1];return "Направление: "+directions[n-1]}if(i===0)return "Сейчас: "+c.meaning;if(i===1)return "Основание: "+directions[n-1];if(i===2)return "Тень: "+shadows[n-1];if(i===3)return "Ресурс: "+c.meaning;return "Следующий шаг: "+directions[n-1]});const spreadOpen=answerHash(q)%3===0?"В этом раскладе карты не повторяют один тезис — каждая отвечает за свой слой вопроса.":answerHash(q)%3===1?"Здесь важно читать карты как последовательность, а не как пять отдельных прогнозов.":"Твой вопрос задаёт контекст, а позиции расклада показывают разные стороны одной ситуации.";const joined=spreadOpen+" «"+q.slice(0,140)+"» "+roleTexts.join(" ")+" Итог: "+(spreadN===3?directions[nums[2]-1]:directions[nums[4]-1]);$("#spreadResult").innerHTML=`<div class="spread-cards">${nums.map((n,i)=>{const c=card(n);return `<div class="spread-card"><img src="${img(n)}" alt="${esc(c.title)}" onerror="this.style.display='none'"><label>${labels[i]}</label><strong>${esc(c.title)}</strong></div>`}).join("")}</div><div class="spread-result-line"><small>ЕДИНЫЙ ОТВЕТ</small><p>${esc(joined)}</p></div>`;saveHistory(q,nums)};
 function saveHistory(q,nums){const h=JSON.parse(localStorage.getItem("cardsKnownHistory")||"[]");h.unshift({q,nums,date:new Date().toLocaleDateString("ru-RU",{day:"2-digit",month:"long"})});localStorage.setItem("cardsKnownHistory",JSON.stringify(h.slice(0,30)));renderHistory()}
 function renderHistory(){const h=JSON.parse(localStorage.getItem("cardsKnownHistory")||"[]");$("#historyList").innerHTML=h.length?h.map(x=>`<article class="history-item"><small>${x.nums.length===1?"ОДНА КАРТА":`РАСКЛАД · ${x.nums.length} КАРТ`}</small><time>${esc(x.date)}</time><p>«${esc(x.q)}»</p><div>${x.nums.map(n=>`<button data-open="${n}">${String(n).padStart(2,"0")} · ${esc(titles[n-1])}</button>`).join("")}</div></article>`).join(""):'<div class="empty">Здесь пока тихо.<br>Первый вопрос появится здесь.</div>';$$("#historyList [data-open]").forEach(b=>b.onclick=()=>openDetail(+b.dataset.open))}
 renderDeck();renderHistory();
