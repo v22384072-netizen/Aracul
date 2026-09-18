@@ -55,11 +55,41 @@ $$("[data-screen]").forEach(b=>b.addEventListener("click",()=>showScreen(b.datas
 $("#aboutBtn").onclick=()=>showScreen("about");
 $("#question").oninput=e=>$("#count").textContent=`${e.target.value.length} / 240`;
 $("#askBtn").onclick=()=>{const q=$("#question").value.trim();if(!q){$("#question").focus();return}currentQuestion=q;document.getElementById("draw").classList.remove("revealed");$("#drawStep").textContent="01 / 02";$("#drawTitle").textContent="Теперь — тишина.";$("#drawSub").textContent="Оставь вопрос здесь. Открой карту, когда будешь готов.";$("#drawCard").className="draw-card";$("#drawCard").innerHTML='<div class="back-design"><b>К</b><span>КАРТЫ ЗНАЮТ</span><i>✦</i></div>';$("#revealBtn").hidden=false;$("#reading").innerHTML="";showScreen("draw")};
+function personalizedAnswer(n,q,c){
+  const t=q.toLowerCase();
+  const topics=[
+    {keys:["деньг","доход","зарплат","заработ","финанс","богат","долг","кредит","расход","кошел","инвест","бизнес","работ","карьер"],name:"финансах и реализации"},
+    {keys:["любов","отношен","партнер","муж","жена","девуш","парн","семь","чувств"],name:"отношениях"},
+    {keys:["переезд","переез","город","страна","дом","квартир","жиль","мест","путешеств"],name:"перемене места"},
+    {keys:["выбор","решен","стоит ли","делать ли","куда","пойти","начать","бросить"],name:"выборе и решении"},
+    {keys:["страх","боюсь","тревог","сомнева","не уверен"],name:"страхе и сомнениях"},
+    {keys:["цель","мечт","план","будущ","получится","успе","достиг"],name:"цели и будущем"},
+    {keys:["здоров","болез","самочув","тело","сон"],name:"личном состоянии"}
+  ];
+  const topic=topics.find(x=>x.keys.some(k=>t.includes(k)))||{name:"твоей ситуации"};
+  const openings=[
+    "По твоему вопросу карта говорит не о мгновенном результате, а о том, на что сейчас стоит опереться.",
+    "В контексте твоего вопроса этот образ указывает прежде всего на способ движения, а не на готовое «да» или «нет».",
+    "Если смотреть именно на твой вопрос, карта подсвечивает место, где сейчас формируется следующий поворот.",
+    "Для твоей ситуации эта карта звучит как приглашение посмотреть глубже очевидного."
+  ];
+  const closings=[
+    "Поэтому не пытайся получить весь ответ сразу: выбери один шаг, который можно проверить в реальности.",
+    "Здесь важнее не угадать будущее, а увидеть, какое решение уже созрело внутри тебя.",
+    "Проверь это через действие: реальность быстро покажет, где есть настоящий ресурс.",
+    "Оставь место для собственного выбора — карта показывает направление внимания, а не принимает решение вместо тебя."
+  ];
+  let specific=c.meaning;
+  if(n<=20) specific="Сначала укрепи опору: "+c.meaning.charAt(0).toLowerCase()+c.meaning.slice(1);
+  else if(n<=40) specific="Сначала убери то, что искажает ситуацию: "+c.meaning.charAt(0).toLowerCase()+c.meaning.slice(1);
+  else specific="Переведи понимание в действие: "+c.meaning.charAt(0).toLowerCase()+c.meaning.slice(1);
+  return openings[(n-1)%openings.length]+" В теме "+topic.name+" это означает: "+specific+" "+directions[n-1]+" "+closings[(n-1)%closings.length];
+}
 function cardHTML(c){return `<article class="mini" data-card="${c.id}"><img src="${img(c.id)}" alt="${esc(c.title)}" onerror="this.style.display='none';this.parentElement.classList.add('no-image')"><div class="mini-info"><span>${String(c.id).padStart(2,"0")} · ${catNames[c.cat]}</span><b>${esc(c.title)}</b></div></article>`}
 function renderDeck(){const list=Array.from({length:60},(_,i)=>card(i+1)).filter(c=>currentCat==="all"||c.cat===currentCat);$("#cardGrid").innerHTML=list.map(cardHTML).join("");$$("#cardGrid [data-card]").forEach(x=>x.onclick=()=>openDetail(+x.dataset.card))}
 function openDetail(n){const c=card(n);$("#detailContent").innerHTML=`<div class="detail-wrap"><div class="detail-art"><img src="${img(n)}" alt="${esc(c.title)}" onerror="this.style.display='none'"></div><div class="detail-copy"><small>${String(n).padStart(2,"0")} · ${catNames[c.cat]}</small><h2>${esc(c.title)}</h2><p>${esc(c.meaning)}</p><div class="detail-label">ВОПРОС КАРТЫ</div><p class="detail-question">Что этот образ помогает тебе увидеть прямо сейчас?</p></div></div>`;showScreen("detail")}
 $$(".filter").forEach(b=>b.onclick=()=>{$$(".filter").forEach(x=>x.classList.remove("active"));b.classList.add("active");currentCat=b.dataset.cat;renderDeck()});
-$("#revealBtn").onclick=()=>{ritualSound();haptic();magicFX();$("#revealBtn").classList.add("pulse");setTimeout(()=>$("#revealBtn").classList.remove("pulse"),900);const n=Math.floor(Math.random()*60)+1,c=card(n);$("#drawStep").textContent="02 / 02";$("#drawTitle").textContent=c.title;$("#drawSub").textContent=catNames[c.cat];document.getElementById("draw").classList.add("revealed");$("#drawCard").className="draw-card open";$("#drawCard").innerHTML=`<img src="${img(n)}" alt="${esc(c.title)}" onerror="this.style.display='none'">`;$("#revealBtn").hidden=true;$("#reading").innerHTML=`<div class="answer-intro"><small>ОТВЕТ ДЛЯ ТВОЕГО ВОПРОСА</small><h3>«${esc(currentQuestion)}»</h3></div><div class="read-block"><small>СУТЬ ОТВЕТА</small><p>${esc(c.meaning)}</p></div><div class="read-block"><small>ТЕНЬ, КОТОРУЮ ВАЖНО УВИДЕТЬ</small><p>${esc(shadows[n-1])}</p></div><div class="read-block"><small>ТВОЁ НАПРАВЛЕНИЕ</small><p>${esc(directions[n-1])}</p></div><div class="read-block"><small>ВОПРОС ОТ КАРТЫ</small><p>${questionCards[n-1]}</p></div><div class="reading-close"><span>✦</span><b>Ответ не решает за тебя.</b><em>Он помогает увидеть следующий шаг яснее.</em></div>`;saveHistory(currentQuestion,[n]);setTimeout(()=>$("#reading").scrollIntoView({behavior:"smooth",block:"start"}),80)};
+$("#revealBtn").onclick=()=>{ritualSound();haptic();magicFX();$("#revealBtn").classList.add("pulse");setTimeout(()=>$("#revealBtn").classList.remove("pulse"),900);const n=Math.floor(Math.random()*60)+1,c=card(n);$("#drawStep").textContent="02 / 02";$("#drawTitle").textContent=c.title;$("#drawSub").textContent=catNames[c.cat];document.getElementById("draw").classList.add("revealed");$("#drawCard").className="draw-card open";$("#drawCard").innerHTML=`<img src="${img(n)}" alt="${esc(c.title)}" onerror="this.style.display='none'">`;$("#revealBtn").hidden=true;$("#reading").innerHTML=`<div class="answer-intro"><small>ОТВЕТ ДЛЯ ТВОЕГО ВОПРОСА</small><h3>«${esc(currentQuestion)}»</h3></div><div class="read-block"><small>СУТЬ ОТВЕТА</small><p>${esc(personalizedAnswer(n,currentQuestion,c))}</p></div><div class="read-block"><small>ТЕНЬ, КОТОРУЮ ВАЖНО УВИДЕТЬ</small><p>${esc(shadows[n-1])}</p></div><div class="read-block"><small>ТВОЁ НАПРАВЛЕНИЕ</small><p>${esc(directions[n-1])}</p></div><div class="read-block"><small>ВОПРОС ОТ КАРТЫ</small><p>${questionCards[n-1]}</p></div><div class="reading-close"><span>✦</span><b>Ответ не решает за тебя.</b><em>Он помогает увидеть следующий шаг яснее.</em></div>`;saveHistory(currentQuestion,[n]);setTimeout(()=>$("#reading").scrollIntoView({behavior:"smooth",block:"start"}),80)};
 $$(".pick").forEach(b=>b.onclick=()=>{$$(".pick").forEach(x=>x.classList.remove("active"));b.classList.add("active");spreadN=+b.dataset.n});
 $("#spreadBtn").onclick=()=>{const q=$("#spreadQuestion").value.trim()||"Что мне важно увидеть сейчас?";const nums=[];while(nums.length<spreadN){const n=Math.floor(Math.random()*60)+1;if(!nums.includes(n))nums.push(n)}const labels=spreadN===3?["Что происходит","Что скрыто","Куда смотреть"]:["Сейчас","Основание","Тень","Ресурс","Следующий шаг"];$("#spreadResult").innerHTML=`<div class="spread-cards">${nums.map((n,i)=>{const c=card(n);return `<div class="spread-card"><img src="${img(n)}" alt="${esc(c.title)}" onerror="this.style.display='none'"><label>${labels[i]}</label><strong>${esc(c.title)}</strong></div>`}).join("")}</div><div class="spread-result-line"><small>ОБЩАЯ ЛИНИЯ</small><p>Посмотри на карты как на последовательность: что уже происходит, что требует внимания и какой шаг естественно следует дальше.</p></div>`;saveHistory(q,nums)};
 function saveHistory(q,nums){const h=JSON.parse(localStorage.getItem("cardsKnownHistory")||"[]");h.unshift({q,nums,date:new Date().toLocaleDateString("ru-RU",{day:"2-digit",month:"long"})});localStorage.setItem("cardsKnownHistory",JSON.stringify(h.slice(0,30)));renderHistory()}
