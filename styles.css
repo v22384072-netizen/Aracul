@@ -46,3 +46,81 @@ nav{position:fixed;z-index:20;left:50%;bottom:0;transform:translateX(-50%);width
 .history-item:active{transform:scale(.99)}
 @media(max-width:360px){.home-intro h1{letter-spacing:-.055em}.home-intro>p{font-size:10px}.question-field textarea{font-size:11px}.oracle-card{width:63vw}}
 @media(min-width:600px){.home-intro{border-radius:28px}.oracle-card{width:285px}}
+
+
+/* Mobile luxury refinement */
+html,body{width:100%;max-width:100%;overscroll-behavior-x:none}
+body{font-synthesis:none;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}
+main{padding-top:2px}
+.wide{width:100%}
+.back{display:inline-flex;align-items:center;gap:7px;margin:2px 0 12px;padding:8px 0;border:0;background:none;color:#756c5e;font-size:8px;letter-spacing:.12em;text-transform:uppercase}
+.back:active{color:var(--gold2);transform:none}
+.question-field:focus-within{border-color:rgba(231,206,145,.42);box-shadow:0 0 0 3px rgba(185,151,84,.05)}
+.question-field textarea{font-family:var(--sans);font-weight:400}
+.question-field textarea:focus::placeholder{opacity:.35}
+.gold{font-family:var(--sans);letter-spacing:.01em}
+select{-webkit-appearance:none;appearance:none;background-image:linear-gradient(45deg,transparent 50%,#8d7548 50%),linear-gradient(135deg,#8d7548 50%,transparent 50%) !important;background-position:calc(100% - 16px) 17px,calc(100% - 12px) 17px !important;background-size:4px 4px,4px 4px !important;background-repeat:no-repeat !important}
+.title h2,.draw-head h2,.ritual-screen h2,.about h2{font-weight:500;letter-spacing:-.025em}
+.home-intro h1{font-weight:500}
+.home-intro>p,.draw-head p,.title p,.about p{letter-spacing:.005em}
+.spread-choice{font-weight:500}
+.reading-question p{overflow-wrap:anywhere}
+.danger{color:#76604d}
+.toast{max-width:calc(100vw - 32px);text-align:center;white-space:normal}
+.nav{min-width:0}
+.nav span{font-family:var(--serif);font-size:16px}
+.nav small{font-weight:500;letter-spacing:.02em}
+@media(max-width:430px){
+  header{height:62px;padding-top:10px}
+  .brand b{font-size:27px}
+  .mark{width:36px;height:36px}
+  main{padding-left:14px;padding-right:14px;padding-bottom:calc(var(--nav) + env(safe-area-inset-bottom) + 22px)}
+  .home-intro{min-height:0;padding:23px 17px 20px;border-radius:22px}
+  .home-intro:before{inset:8px;border-radius:16px}
+  .home-intro h1{font-size:clamp(48px,15vw,61px);line-height:.82;margin-top:82px}
+  .home-intro>p{font-size:11px;line-height:1.65}
+  .question-field{padding:12px 13px}
+  .question-field textarea{height:68px;line-height:1.55}
+  .gold{min-height:49px;border-radius:11px}
+  .spaces button{min-height:82px}
+  .spaces b{font-size:20px}
+  .ritual-screen{padding:62px 16px 24px;min-height:calc(100dvh - var(--nav) - 62px)}
+  .ritual-screen h2{font-size:clamp(42px,13vw,50px)}
+  .ritual-screen>p{font-size:18px}
+  .draw-head{padding-top:4px}
+  .draw-head h2{font-size:clamp(39px,12vw,46px)}
+  .deck-stage{height:min(62vh,420px);min-height:360px}
+  .oracle-card{width:min(68vw,275px);border-radius:14px}
+  .card-face{padding:14px 13px 16px}
+  .card-face strong{font-size:clamp(23px,7vw,28px)}
+  .reading{margin-top:24px;padding:17px 14px 19px;border-radius:16px}
+  .reading-lead p{font-size:16px}
+  .reading article p{font-size:12.5px;line-height:1.65}
+  .title{padding-top:2px}
+  .title h2{font-size:clamp(42px,13vw,50px)}
+  .detail-symbol{height:min(58vw,230px)}
+  .detail-card h2{font-size:clamp(38px,11vw,46px)}
+  .about{min-height:0;padding:42px 20px 30px}
+  .about h2{font-size:clamp(48px,15vw,58px)}
+  .about-stats{margin-top:35px}
+  nav{height:calc(68px + env(safe-area-inset-bottom));padding-top:6px}
+  .nav{border-radius:11px}
+}
+@media(max-width:360px){
+  .home-intro h1{font-size:49px;margin-top:74px}
+  .home-intro>p{font-size:10px}
+  .question-field textarea{height:64px;font-size:11px}
+  .home-divider{margin-top:21px}
+  .ritual-screen{padding-top:52px}
+  .ritual-screen h2{font-size:41px}
+  .deck-stage{min-height:330px;height:54vh}
+  .oracle-card{width:66vw}
+  .reading{padding-left:13px;padding-right:13px}
+  .reading-block{padding:13px}
+  .reading-sub{grid-template-columns:76px 1fr}
+  .grid{gap:6px}
+  .grid .mini-card b{font-size:13px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
