@@ -1,0 +1,6 @@
+/* V30 — память чтений */
+.v30-memory{margin-top:18px;padding:16px 17px;border:1px solid rgba(194,139,114,.2);border-radius:16px;background:linear-gradient(180deg,rgba(194,139,114,.055),rgba(255,255,255,.012))}
+.v30-memory small{font:10px "DM Mono",monospace;letter-spacing:.14em;color:#c28b72}
+.v30-memory p{margin:8px 0 0;color:#c9c4bb;font-size:13px;line-height:1.6}
+.v30-memory p b{color:#eee9df;font-weight:500}
+.v30-memory-history{margin-bottom:16px}
