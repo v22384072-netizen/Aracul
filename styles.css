@@ -166,3 +166,63 @@ main{background:transparent}
 /* V13 — card as ritual centerpiece */
 #draw.active.revealed .card-stage{position:relative;isolation:isolate}#draw.active.revealed .card-stage:after{content:"";position:absolute;inset:-18px;border:1px solid rgba(194,139,114,.16);border-radius:24px;box-shadow:0 0 70px rgba(194,139,114,.09),inset 0 0 45px rgba(194,139,114,.035);pointer-events:none;z-index:-1;animation:frameBloom 1.4s ease-out both}.draw-card.open{position:relative;box-shadow:0 28px 80px rgba(0,0,0,.55),0 0 38px rgba(194,139,114,.13);transition:box-shadow 1.2s ease}.draw-card.open:after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 20%,rgba(255,244,224,.18) 46%,transparent 58%);transform:translateX(-130%);animation:sheen 1.6s 0.35s ease-out forwards;pointer-events:none}.draw-card.open img{display:block;width:100%;height:100%;object-fit:cover;animation:imageSettle 1.1s cubic-bezier(.2,.7,.2,1) both}.question-echo{max-width:620px;margin-bottom:18px}.question-echo small{opacity:.72}.question-echo span{letter-spacing:.01em}@keyframes frameBloom{0%{opacity:0;transform:scale(.94)}100%{opacity:1;transform:scale(1)}}@keyframes sheen{to{transform:translateX(130%)}}@keyframes imageSettle{0%{opacity:.55;transform:scale(1.035)}100%{opacity:1;transform:scale(1)}}
 #draw.active.revealed .draw-title{letter-spacing:.01em;animation:titleArrive .9s .25s both}@keyframes titleArrive{from{opacity:0;transform:translateY(7px);filter:blur(4px)}to{opacity:1;transform:none;filter:none}}
+
+/* V14 — full cinematic result */
+#draw.active.revealed .reading{
+  max-width:860px;margin:78px auto 0;padding:0 0 70px;border-top:0;
+}
+.reading-head{
+  display:flex;justify-content:space-between;align-items:end;
+  padding:0 0 22px;border-bottom:1px solid rgba(238,233,223,.18);
+}
+.reading-head small,.reading-index{
+  color:#c28b72;font:500 9px var(--mono);letter-spacing:.18em;
+}
+.reading-head h3{
+  margin:12px 0 0;color:#eee9df;font:400 32px/1.1 var(--serif);letter-spacing:-.02em;
+}
+.reading-index{color:#77757d;letter-spacing:.1em}
+.reading-hero{
+  display:grid;grid-template-columns:150px 1fr;gap:28px;align-items:center;
+  padding:30px 0 34px;border-bottom:1px solid rgba(238,233,223,.12);
+}
+.reading-thumb{
+  width:150px;aspect-ratio:2/3;overflow:hidden;
+  border:1px solid rgba(194,139,114,.45);box-shadow:0 18px 45px rgba(0,0,0,.42);
+}
+.reading-thumb img{display:block;width:100%;height:100%;object-fit:cover}
+.reading-card-meta small{color:#c28b72;font:500 9px var(--mono);letter-spacing:.16em}
+.reading-card-meta h4{margin:10px 0 12px;color:#eee9df;font:400 43px/.98 var(--serif);letter-spacing:-.035em}
+.reading-card-meta p{margin:0;max-width:560px;color:#8f8c94;font:italic 17px/1.5 var(--serif)}
+#draw.active.revealed .answer-intro{
+  margin-top:10px;padding:46px 0 34px;border-bottom:1px solid rgba(238,233,223,.12);
+}
+#draw.active.revealed .answer-intro h3{
+  max-width:700px;font-size:25px;line-height:1.35;color:#d8d2c8;
+}
+#draw.active.revealed .read-block{
+  padding:34px 0;border-bottom:1px solid rgba(238,233,223,.1);
+}
+#draw.active.revealed .read-block small{font-size:9px}
+#draw.active.revealed .read-block p{max-width:760px;font-size:21px;line-height:1.7}
+#draw.active.revealed .reading-close{
+  margin:0;padding:56px 0 0;border-top:0;
+}
+.new-question{
+  display:block;margin:28px auto 0;padding:14px 20px;
+  border:1px solid rgba(194,139,114,.5);color:#eee9df;background:transparent;
+  font:500 10px var(--sans);letter-spacing:.04em;transition:.25s;
+}
+.new-question i{font-style:normal;margin-left:18px;color:#c28b72}
+.new-question:hover{transform:translateY(-2px);border-color:#c28b72;background:rgba(194,139,114,.07)}
+@media(max-width:700px){
+  #draw.active.revealed .reading{margin-top:54px;padding-bottom:45px}
+  .reading-head h3{font-size:27px}
+  .reading-hero{grid-template-columns:105px 1fr;gap:18px;padding:24px 0 28px}
+  .reading-thumb{width:105px}
+  .reading-card-meta h4{font-size:31px}
+  .reading-card-meta p{font-size:14px}
+  #draw.active.revealed .answer-intro{padding:34px 0 28px}
+  #draw.active.revealed .answer-intro h3{font-size:21px}
+  #draw.active.revealed .read-block p{font-size:18px;line-height:1.65}
+}
