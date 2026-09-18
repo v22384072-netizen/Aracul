@@ -6,10 +6,16 @@ const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 let currentQuestion="",currentCat="all",spreadN=3;
 let audioCtx=null;
 function ritualSound(){
+  // Short, warm three-stage reveal cue: low pulse -> glassy lift -> soft resolve.
+
   try{
     audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
     if(audioCtx.state==="suspended") audioCtx.resume();
     const now=audioCtx.currentTime;
+    const boom=audioCtx.createOscillator(), boomGain=audioCtx.createGain();
+    boom.type="sine"; boom.frequency.setValueAtTime(92,now); boom.frequency.exponentialRampToValueAtTime(48,now+.55);
+    boomGain.gain.setValueAtTime(.0001,now); boomGain.gain.exponentialRampToValueAtTime(.11,now+.025); boomGain.gain.exponentialRampToValueAtTime(.0001,now+.7);
+    boom.connect(boomGain); boomGain.connect(master); boom.start(now); boom.stop(now+.75);
     const master=audioCtx.createGain(); master.gain.setValueAtTime(.0001,now); master.gain.exponentialRampToValueAtTime(.18,now+.025); master.gain.exponentialRampToValueAtTime(.0001,now+2.2); master.connect(audioCtx.destination);
     [261.63,392,523.25,659.25].forEach((f,i)=>{
       const o=audioCtx.createOscillator(); const g=audioCtx.createGain();
