@@ -1,0 +1,9 @@
+.daily-wrap.daily-ritual{animation:dailyPulse 1.7s ease both}
+.daily-ritual .daily-card{animation:dailyCardReveal 1.15s cubic-bezier(.2,.8,.2,1) both}
+.daily-ritual .daily-copy{animation:dailyCopyIn .7s ease both}
+@keyframes dailyPulse{0%{filter:brightness(.82)}18%{filter:brightness(1.12)}100%{filter:brightness(1)}}
+@keyframes dailyCardReveal{0%{transform:scale(.96) translateY(12px);opacity:.55;box-shadow:0 8px 25px rgba(0,0,0,.25)}55%{transform:scale(1.015) translateY(-5px);opacity:1}100%{transform:scale(1) translateY(-3px)}}
+@keyframes dailyCopyIn{0%{opacity:.45;transform:translateY(5px)}100%{opacity:1;transform:none}}
+.daily-wrap:before{content:"";display:block;height:1px;width:0;background:#c28b72;opacity:.55;transition:width 1.1s ease}
+.daily-ritual:before{width:100%}
+@media(prefers-reduced-motion:reduce){.daily-wrap.daily-ritual,.daily-ritual .daily-card,.daily-ritual .daily-copy{animation:none}.daily-wrap:before{transition:none}}
