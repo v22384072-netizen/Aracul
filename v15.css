@@ -1,0 +1,22 @@
+/* V15 — fallback art for unavailable card images */
+.missing-art-content{position:absolute;inset:0;z-index:3}
+.missing-art{background:
+  radial-gradient(circle at 50% 38%,rgba(194,139,114,.13),transparent 32%),
+  linear-gradient(145deg,#1a1b21,#101116)!important;
+  border:1px solid rgba(194,139,114,.18)}
+.missing-art .mini-info{display:none}
+.missing-art-content .missing-art{position:absolute;inset:0}
+.missing-art-content .missing-art-content{display:none}
+.missing-art-content .missing-art span{display:block}
+.missing-art-content{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:18px}
+.missing-art-content span{color:#c28b72;font:34px "Playfair Display",serif;margin-bottom:18px}
+.missing-art-content small{color:#77757d;font:9px "DM Mono",monospace;letter-spacing:.18em}
+.missing-art-content b{margin-top:12px;color:#eee9df;font:400 25px/1.05 "Playfair Display",serif}
+.missing-art-content em{margin-top:10px;color:#9b7a6c;font:normal 8px "DM Mono",monospace;letter-spacing:.13em}
+.missing-card{background:#15161b!important}
+.missing-card .missing-art-content{position:absolute;inset:12px;border:1px solid rgba(194,139,114,.32)}
+.missing-card .missing-art-content span{font-size:42px}
+@media(max-width:700px){
+ .missing-art-content b{font-size:19px}
+ .missing-art-content span{font-size:28px}
+}
