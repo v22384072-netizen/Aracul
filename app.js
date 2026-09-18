@@ -699,7 +699,7 @@ function leadFor(c){return personalLead(c,currentQuestion)}
 function another(){currentQuestion='';$('#homeQuestion').value='';$('#reading').classList.remove('visible');$('#ritualAction').disabled=false;screen('home');setTimeout(()=>$('#homeQuestion').focus(),300)}
 
 function openSpread(){const q=$('#homeQuestion').value.trim();currentQuestion=q;$('#spreadQuestion').value=q;screen('spread');$('#spreadResult').innerHTML='';$('#spreadReading').classList.remove('visible');$('#spreadReading').innerHTML='';$('#spreadIntro').textContent=q?'Вопрос принят. Теперь карты покажут его с трёх сторон.':'Сформулируй вопрос — так расклад станет личным.'}
-function doSpread(){const q=$('#spreadQuestion').value.trim();if(!q){$('#spreadQuestion').focus();toast('Напиши вопрос, прежде чем раскладывать карты.');return}currentQuestion=q;let pool=[...cards];spreadCards=[];for(let i=0;i<spreadSize;i++){const c=random(pool);spreadCards.push(c);pool=pool.filter(x=>x.id!==c.id)}const positions=spreadSize===1?['СУТЬ ВОПРОСА']:spreadSize===3?['ЧТО ПРОИСХОДИТ','ЧТО ОСТАЁТСЯ В ТЕНИ','СЛЕДУЮЩИЙ ШАГ']:['СУТЬ','ПРИЧИНА','ТЕНЬ','РЕСУРС','СЛЕДУЮЩИЙ ШАГ'];$('#spreadResult').innerHTML=spreadCards.map((c,i)=>`<div class="spread-card-wrap"><small>${positions[i]}</small>${cardMini(c)}</div>`).join('')+`<button id="interpretSpread" class="gold wide">Слушать весь расклад</button>`;$('#spreadResult .mini-card').forEach(x=>x.onclick=()=>detail(+x.dataset.id));$('#interpretSpread').onclick=()=>interpretSpread();save({type:'spread',question:q,cards:spreadCards.map(c=>c.id),size:spreadSize});haptic('medium')}
+function doSpread(){const q=$('#spreadQuestion').value.trim();if(!q){$('#spreadQuestion').focus();toast('Напиши вопрос, прежде чем раскладывать карты.');return}currentQuestion=q;let pool=[...cards];spreadCards=[];for(let i=0;i<spreadSize;i++){const c=random(pool);spreadCards.push(c);pool=pool.filter(x=>x.id!==c.id)}const positions=spreadSize===1?['СУТЬ ВОПРОСА']:spreadSize===3?['ЧТО ПРОИСХОДИТ','ЧТО ОСТАЁТСЯ В ТЕНИ','СЛЕДУЮЩИЙ ШАГ']:['СУТЬ','ПРИЧИНА','ТЕНЬ','РЕСУРС','СЛЕДУЮЩИЙ ШАГ'];$('#spreadResult').innerHTML=spreadCards.map((c,i)=>`<div class="spread-card-wrap"><small>${positions[i]}</small>${cardMini(c)}</div>`).join('')+`<button id="interpretSpread" class="gold wide">Слушать весь расклад</button>`;$('#spreadResult .mini-card').forEach(x=>x.onclick=()=>detail(+x.dataset.id));$('#interpretSpread').onclick=()=>interpretSpread();save({type:'spread',question:q,cards:spreadCards.map(c=>c.id),size:spreadSize,context:contextOf(q)});haptic('medium')}
 
 function detail(id){const c=cards.find(x=>x.id===id);if(!c)return;$('#detailBox').innerHTML=`<div class="detail-card"><div class="detail-symbol">${cardImgTag(c)}<i>✦</i></div><small>${String(c.id).padStart(2,'0')} · ${names[c.category].toUpperCase()}</small><h2>${esc(c.title)}</h2><em>${c.meaning}</em><section><b>ТЕНЬ</b><p>${c.shadow}</p></section><section><b>ВОПРОС К СЕБЕ</b><p>${c.question}</p></section><section><b>НАПРАВЛЕНИЕ</b><p>${c.direction}</p></section></div>`;screen('detail')}
 function renderDeck(){const filter=$('#deckFilter').value;const list=filter==='all'?cards:cards.filter(c=>c.category===filter);$('#grid').innerHTML=list.map(cardMini).join('');$$('#grid .mini-card').forEach(x=>x.onclick=()=>detail(+x.dataset.id));$('#deckCount').textContent=`${list.length} карт`}
@@ -1022,13 +1022,23 @@ function showReading(c,q){
   setTimeout(()=>$('#reading').scrollIntoView({behavior:'smooth',block:'start'}),220);
 }
 
+function spreadConclusion(cards,q){
+  const ctx=contextOf(q);
+  if(!cards.length)return '';
+  const first=cards[0], last=cards[cards.length-1];
+  const lens={work:'В работе и выборе деятельности',relations:'В отношениях',day:'В ближайшем периоде',decision:'В этом выборе',inner:'В твоём внутреннем состоянии',people:'В общении с людьми',money:'В финансовом вопросе',general:'В твоём вопросе'}[ctx]||'В твоём вопросе';
+  const firstText=readingFor(first,q).meaning;
+  const lastText=readingFor(last,q).direction;
+  return lens+' расклад начинается с темы «'+first.title+'» и приходит к «'+last.title+'». Смысл здесь не в том, чтобы угадать готовый ответ, а в том, чтобы увидеть связь между началом ситуации и следующим шагом. '+lastText;
+}
 function interpretSpread(){
   const result=$('#spreadReading');
   const positions=spreadSize===1?['СУТЬ ВОПРОСА']:spreadSize===3?['ЧТО ПРОИСХОДИТ','ЧТО ОСТАЁТСЯ В ТЕНИ','СЛЕДУЮЩИЙ ШАГ']:['СУТЬ','ПРИЧИНА','ТЕНЬ','РЕСУРС','СЛЕДУЮЩИЙ ШАГ'];
+  const conclusion=spreadConclusion(spreadCards,currentQuestion);
   result.innerHTML='<div class="reading-block"><small>ВОПРОС, С КОТОРЫМ ТЫ ПРИШЁЛ</small><p>«'+esc(currentQuestion)+'»</p></div>'+spreadCards.map((c,i)=>{
     const r=readingFor(c,currentQuestion);
     return '<article><small>'+String(i+1).padStart(2,'0')+' · '+positions[i]+'</small><h3>'+esc(c.title)+'</h3><p>'+personalLead(c,currentQuestion)+'</p><div class="reading-sub"><b>ТЕНЬ</b><span>'+esc(r.shadow)+'</span></div><div class="reading-sub"><b>НАПРАВЛЕНИЕ</b><span>'+esc(r.direction)+'</span></div><div class="reading-sub"><b>ВОПРОС К ТЕБЕ</b><span>'+esc(r.question)+'</span></div></article>';
-  }).join('')+'<button class="gold wide" onclick="screen(\'home\')">Задать новый вопрос</button>';
+  }).join('')+(conclusion?'<div class="reading-block spread-conclusion"><small>СВЯЗЬ РАСКЛАДА</small><p>'+esc(conclusion)+'</p></div>':'')+'<button class="gold wide" onclick="screen(\'home\')">Задать новый вопрос</button>';
   result.classList.add('visible');
   result.scrollIntoView({behavior:'smooth',block:'start'});
   haptic('success');
