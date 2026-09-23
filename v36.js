@@ -150,7 +150,7 @@
     $("#askBtn").addEventListener("keydown",e=>{if(e.key==="Enter")ask()});
     $("#question").addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key==="Enter")ask()});
     $("#revealBtn").hidden=true;
-    renderDeck();renderHistory();renderDaily();renderMyDeck();
+    renderDeck();history();renderDaily();renderMyDeck();
   }
 
   // Remove legacy delegated handlers by replacing only the page runtime: this file is loaded last.
