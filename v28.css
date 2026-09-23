@@ -1,7 +1,0 @@
-/* V28 — визуальная линия связей */
-.v27-finale.shown{border-color:rgba(194,139,114,.38);box-shadow:0 0 28px rgba(194,139,114,.05)}
-.v27-finale.shown p{animation:v28Line .9s ease both}
-.v28-line{position:relative}
-.v28-line:before{content:"";display:block;width:42px;height:1px;background:#c28b72;margin-bottom:13px;opacity:.7}
-@keyframes v28Line{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-@media(prefers-reduced-motion:reduce){.v27-finale.shown p{animation:none}}
