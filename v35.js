@@ -183,6 +183,30 @@
     },1200);
   }
 
+  function runSpread(){
+    const q=($("#spreadQuestion")?.value||"").trim()||"Что мне важно увидеть сейчас?";
+    const total=typeof window.spreadN==="number"&&(window.spreadN===5)?5:3;
+    const nums=[];
+    while(nums.length<total){const n=Math.floor(Math.random()*60)+1;if(!nums.includes(n))nums.push(n)}
+    const labels=total===3?["СИТУАЦИЯ","СКРЫТАЯ ПРИЧИНА","НАПРАВЛЕНИЕ"]:["СЕЙЧАС","ОСНОВАНИЕ","ТЕНЬ","РЕСУРС","СЛЕДУЮЩИЙ ШАГ"];
+    const cards=nums.map(n=>cardData(n));
+    $("#spreadResult").innerHTML=
+      '<div class="spread-cards v35-spread-cards">'+cards.map((c,i)=>
+        '<article class="v35-spread-card"><div class="v35-spread-back">'+backHTML()+'</div><div class="v35-spread-front"><img src="'+image(c.id)+'" alt="'+safe(c.title)+'"><small>'+labels[i]+'</small><strong>'+safe(c.title)+'</strong></div></article>'
+      ).join("")+'</div>'+
+      '<div class="spread-result-line"><small>ЛИНИЯ РАСКЛАДА</small><p>'+safe(
+        "Вопрос: «"+q.slice(0,180)+"». "+
+        cards.map((c,i)=>labels[i]+" — «"+c.title+"»: "+String(c.meaning||"")).join(" ")+
+        " Последняя карта переводит чтение в следующий проверяемый шаг."
+      )+'</p></div>';
+    try{
+      const h=JSON.parse(localStorage.getItem("cardsKnownHistory")||"[]");
+      h.unshift({q,nums,date:new Date().toLocaleDateString("ru-RU",{day:"2-digit",month:"long"})});
+      localStorage.setItem("cardsKnownHistory",JSON.stringify(h.slice(0,30)));
+    }catch(e){}
+    setTimeout(()=>{$("#spreadResult")?.scrollIntoView({behavior:"smooth",block:"start"})},80);
+  }
+
   function cleanNav(){
     const nav=$(".nav");if(!nav)return;
     nav.innerHTML=
@@ -248,10 +272,7 @@
       return;
     }
 
-    if(target.closest("#spreadBtn")){
-      // let the stable spread layer below rebuild it; no legacy handler is allowed to race it.
-      e.stopImmediatePropagation();
-    }
+    if(target.closest("#spreadBtn")){e.preventDefault();e.stopImmediatePropagation();runSpread();return}
   },true);
 
   // Keep all generated backs consistent without observing the entire document.
